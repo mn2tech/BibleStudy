@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Pure Man – Lesson One</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -69,16 +72,13 @@
     padding: 4px 12px;
     letter-spacing: 1px;
   }
-  .members-pill {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+  .welcome-name {
     font-family: 'DM Sans', sans-serif;
     font-size: 0.78rem;
-    color: #94a3b8;
+    color: var(--gold-light);
+    display: none;
   }
-  .dot { width:8px; height:8px; border-radius:50%; background:#22c55e; animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+  .welcome-name.visible { display: inline; }
 
   /* Name entry overlay */
   #name-overlay {
@@ -252,8 +252,7 @@
     color: var(--fill);
     background: transparent;
     outline: none;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     transition: border-color 0.2s, background 0.2s;
     text-align: center;
   }
@@ -264,7 +263,8 @@
   }
   .blank.filled {
     border-color: var(--gold);
-    color: var(--fill);
+    color: var(--navy);
+    background: rgba(201,168,76,0.2);
     animation: popIn 0.3s ease;
   }
   @keyframes popIn {
@@ -460,25 +460,6 @@
     z-index: 50;
   }
 
-  /* Member avatars */
-  .avatars {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-  }
-  .avatar {
-    width: 26px; height: 26px;
-    border-radius: 50%;
-    background: var(--gold);
-    color: var(--navy);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.65rem;
-    font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-    border: 2px solid var(--navy);
-    text-transform: uppercase;
-  }
-
   @media (max-width: 480px) {
     .big-fill { font-size: 1.2rem; }
     .lesson-title h1 { font-size: 1.5rem; }
@@ -495,7 +476,7 @@
     <h2>Welcome, Brother</h2>
     <p>Enter your name to join the study session and follow along with the lesson.</p>
     <input class="name-input" id="name-input" type="text" placeholder="Your first name..." maxlength="20" autofocus>
-    <button class="btn-join" onclick="joinSession()">Join Session</button>
+    <button class="btn-join" id="btn-join" type="button">Join Session</button>
   </div>
 </div>
 
@@ -505,11 +486,7 @@
   <div class="subtitle">Men's Bible Study · Lesson One</div>
   <div class="session-bar">
     <span class="session-code">SESSION: PUREMAN-L1</span>
-    <div class="members-pill">
-      <span class="dot"></span>
-      <div class="avatars" id="avatars-bar"></div>
-      <span id="member-count">1 member live</span>
-    </div>
+    <span id="welcome-name" class="welcome-name"></span>
   </div>
 </header>
 
@@ -542,19 +519,19 @@
     <div class="fitb-line">
       <span class="bullet">›</span>
       A pure man is
-      <input class="blank" data-answer="undivided" placeholder="fill in..." oninput="handleBlank(this)" onblur="handleBlank(this)">
+      <input class="blank" data-answer="undivided" placeholder="fill in...">
       .
     </div>
     <div class="fitb-line">
       <span class="bullet">›</span>
       A pure man is
-      <input class="blank" data-answer="uncontaminated" placeholder="fill in..." oninput="handleBlank(this)" onblur="handleBlank(this)">
+      <input class="blank" data-answer="uncontaminated" placeholder="fill in...">
       .
     </div>
     <div class="fitb-line">
       <span class="bullet">›</span>
       A pure man is
-      <input class="blank" data-answer="unmistakable" placeholder="fill in..." oninput="handleBlank(this)" onblur="handleBlank(this)">
+      <input class="blank" data-answer="unmistakable" placeholder="fill in...">
       .
     </div>
   </div>
@@ -564,8 +541,8 @@
     <div class="section-label">The Problem</div>
     <div class="big-fill">
       We have a
-      <input class="blank" data-answer="purity" placeholder="fill in..." oninput="handleBlank(this)" onblur="handleBlank(this)">
-      <input class="blank" data-answer="problem" placeholder="fill in..." oninput="handleBlank(this)" onblur="handleBlank(this)">
+      <input class="blank" data-answer="purity" placeholder="fill in...">
+      <input class="blank" data-answer="problem" placeholder="fill in...">
       .
     </div>
 
@@ -589,8 +566,8 @@
   <div class="section">
     <div class="section-label">Impurity's Reach</div>
     <div class="big-fill">
-      <input class="blank" data-answer="impurity" placeholder="fill in..." oninput="handleBlank(this)" onblur="handleBlank(this)">
-      <input class="blank" data-answer="plagues" placeholder="fill in..." oninput="handleBlank(this)" onblur="handleBlank(this)">
+      <input class="blank" data-answer="impurity" placeholder="fill in...">
+      <input class="blank" data-answer="plagues" placeholder="fill in...">
       all of us.
     </div>
 
@@ -620,7 +597,7 @@
     <div class="section-label">How Sin Enters</div>
     <div class="fitb-line" style="font-size:1.2rem; font-family:'Playfair Display',serif; font-weight:700; color:var(--navy);">
       Impurities look for the
-      <input class="blank" data-answer="path of least resistance" placeholder="fill in..." oninput="handleBlank(this)" onblur="handleBlank(this)" style="min-width:240px;">
+      <input class="blank" data-answer="path of least resistance" placeholder="fill in..." style="min-width:240px;">
       .
     </div>
 
@@ -645,7 +622,7 @@
     <div class="section-label">The Solution</div>
     <div class="fitb-line" style="font-size:1.2rem; font-family:'Playfair Display',serif; font-weight:700; color:var(--navy);">
       Purity problems are best resolved
-      <input class="blank" data-answer="at the source" placeholder="fill in..." oninput="handleBlank(this)" onblur="handleBlank(this)" style="min-width:200px;">
+      <input class="blank" data-answer="at the source" placeholder="fill in..." style="min-width:200px;">
       .
     </div>
 
@@ -664,9 +641,9 @@
     <div class="fitb-line" style="margin:10px 0;">
       <span class="bullet">›</span>
       Get into a
-      <input class="blank" data-answer="posture" placeholder="fill in..." oninput="handleBlank(this)" onblur="handleBlank(this)">
+      <input class="blank" data-answer="posture" placeholder="fill in...">
       of
-      <input class="blank" data-answer="humility" placeholder="fill in..." oninput="handleBlank(this)" onblur="handleBlank(this)">
+      <input class="blank" data-answer="humility" placeholder="fill in...">
       .
     </div>
 
@@ -685,7 +662,7 @@
 
     <div class="fitb-line" style="margin:16px 0;">
       <span class="bullet">›</span>
-      <input class="blank" data-answer="genuinely bring" placeholder="fill in..." oninput="handleBlank(this)" onblur="handleBlank(this)" style="min-width:200px;">
+      <input class="blank" data-answer="genuinely bring" placeholder="fill in..." style="min-width:200px;">
       the issue to God.
     </div>
 
@@ -701,9 +678,9 @@
     <div class="fitb-line" style="margin:16px 0;">
       <span class="bullet">›</span>
       Ask for and receive God's
-      <input class="blank" data-answer="cleansing" placeholder="fill in..." oninput="handleBlank(this)" onblur="handleBlank(this)">
+      <input class="blank" data-answer="cleansing" placeholder="fill in...">
       and
-      <input class="blank" data-answer="restoration" placeholder="fill in..." oninput="handleBlank(this)" onblur="handleBlank(this)">
+      <input class="blank" data-answer="restoration" placeholder="fill in...">
       .
     </div>
 
@@ -773,72 +750,186 @@
 </main>
 
 <!-- Progress indicator -->
-<div class="progress-indicator" id="progress-indicator">0 / 0 blanks filled</div>
+<div class="progress-indicator" id="progress-indicator">0 / 14 blanks filled</div>
 
 <script>
-  // ── Members simulation ──
-  const MEMBERS = ['You'];
-  const DEMO_NAMES = ['Marcus', 'James', 'Elijah'];
-  let memberName = '';
-  let demoJoined = 0;
+(function () {
+  const STORAGE_KEY = 'pureman-l1';
+  let saveTimer;
+
+  function loadSave() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (_) {
+      return {};
+    }
+  }
+
+  function saveAll() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      const data = { version: 1, blanks: {}, reflections: {}, updatedAt: new Date().toISOString() };
+      const nameInput = document.getElementById('name-input');
+      const welcome = document.getElementById('welcome-name');
+      let name = nameInput ? nameInput.value.trim() : '';
+      if (!name && welcome && welcome.classList.contains('visible')) {
+        name = welcome.textContent.replace(/^Welcome,\s*/, '').trim();
+      }
+      if (name) data.name = name;
+
+      document.querySelectorAll('input.blank').forEach((b) => {
+        const key = b.getAttribute('data-answer');
+        if (key && b.value.trim()) data.blanks[key] = b.value;
+      });
+      document.querySelectorAll('textarea.reflection-textarea').forEach((t, i) => {
+        if (t.value.trim()) data.reflections['q' + (i + 1)] = t.value;
+      });
+
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      } catch (_) { /* private browsing / quota */ }
+    }, 300);
+  }
+
+  function enterSession(name) {
+    document.getElementById('name-overlay').style.display = 'none';
+    const welcome = document.getElementById('welcome-name');
+    welcome.textContent = 'Welcome, ' + name;
+    welcome.classList.add('visible');
+    saveAll();
+  }
 
   function joinSession() {
     const val = document.getElementById('name-input').value.trim();
-    if (!val) { document.getElementById('name-input').focus(); return; }
-    memberName = val;
-    MEMBERS[0] = val;
-    document.getElementById('name-overlay').style.display = 'none';
-    updateAvatars();
-    // Simulate others joining
-    setTimeout(() => addMember(DEMO_NAMES[0]), 1800);
-    setTimeout(() => addMember(DEMO_NAMES[1]), 4200);
-    setTimeout(() => addMember(DEMO_NAMES[2]), 7000);
+    if (!val) {
+      document.getElementById('name-input').focus();
+      return;
+    }
+    enterSession(val);
   }
 
+  document.getElementById('btn-join').addEventListener('click', joinSession);
   document.getElementById('name-input').addEventListener('keydown', e => {
     if (e.key === 'Enter') joinSession();
   });
 
-  function addMember(name) {
-    if (!MEMBERS.includes(name)) {
-      MEMBERS.push(name);
-      updateAvatars();
+  function norm(s) {
+    return String(s || '').trim().toLowerCase().replace(/\s+/g, ' ');
+  }
+
+  function autofillBlank(input) {
+    const answer = input.getAttribute('data-answer');
+    if (!answer) return;
+
+    const typed = norm(input.value);
+    const target = norm(answer);
+
+    if (!typed) {
+      input.classList.remove('filled');
+      input.placeholder = 'fill in...';
+      return;
     }
-  }
 
-  function updateAvatars() {
-    const bar = document.getElementById('avatars-bar');
-    bar.innerHTML = MEMBERS.map(m =>
-      `<div class="avatar" title="${m}">${m[0]}</div>`
-    ).join('');
-    const c = MEMBERS.length;
-    document.getElementById('member-count').textContent = c + ' member' + (c !== 1 ? 's' : '') + ' live';
-  }
-
-  // ── Fill-in-the-blank logic ──
-  const blanks = document.querySelectorAll('.blank');
-  const progressBar = document.getElementById('progress-bar');
-  const progressIndicator = document.getElementById('progress-indicator');
-
-  function handleBlank(el) {
-    const val = el.value.trim();
-    if (val.length > 0) {
-      el.classList.add('filled');
+    if (target.startsWith(typed)) {
+      input.value = answer;
+      input.classList.add('filled');
+      input.placeholder = '';
     } else {
-      el.classList.remove('filled');
+      input.classList.remove('filled');
     }
-    updateProgress();
   }
 
-  function updateProgress() {
+  function syncBlankStyle(input) {
+    const answer = input.getAttribute('data-answer');
+    if (!answer) return;
+    if (norm(input.value) === norm(answer)) {
+      input.classList.add('filled');
+      input.placeholder = '';
+    } else if (!input.value.trim()) {
+      input.classList.remove('filled');
+      input.placeholder = 'fill in...';
+    } else {
+      input.classList.remove('filled');
+    }
+  }
+
+  function updateBlankProgress() {
+    const blanks = document.querySelectorAll('input.blank');
     let filled = 0;
-    blanks.forEach(b => { if (b.value.trim().length > 0) filled++; });
-    const pct = Math.round((filled / blanks.length) * 100);
-    progressBar.style.width = pct + '%';
-    progressIndicator.textContent = filled + ' / ' + blanks.length + ' blanks filled';
+    blanks.forEach((b) => {
+      const ans = b.getAttribute('data-answer');
+      if (ans && norm(b.value) === norm(ans)) filled++;
+    });
+    const bar = document.getElementById('progress-bar');
+    const label = document.getElementById('progress-indicator');
+    const pct = blanks.length ? Math.round((filled / blanks.length) * 100) : 0;
+    if (bar) bar.style.width = pct + '%';
+    if (label) label.textContent = filled + ' / ' + blanks.length + ' blanks filled';
   }
 
-  updateProgress();
+  function onBlankEvent(e) {
+    const input = e.target;
+    if (!(input instanceof HTMLInputElement) || !input.classList.contains('blank')) return;
+    autofillBlank(input);
+    updateBlankProgress();
+    saveAll();
+  }
+
+  document.querySelectorAll('input.blank').forEach((input) => {
+    input.setAttribute('autocomplete', 'off');
+    input.setAttribute('spellcheck', 'false');
+    input.addEventListener('focus', () => {
+      const answer = input.getAttribute('data-answer');
+      if (answer && !norm(input.value)) {
+        input.placeholder = 'Type "' + answer.charAt(0) + '" to autofill…';
+      }
+    });
+    input.addEventListener('blur', () => {
+      if (!norm(input.value)) input.placeholder = 'fill in...';
+    });
+  });
+
+  document.querySelectorAll('textarea.reflection-textarea').forEach((ta) => {
+    ta.addEventListener('input', () => saveAll());
+  });
+
+  document.addEventListener('input', onBlankEvent, true);
+  document.addEventListener('keyup', onBlankEvent, true);
+  document.addEventListener('keydown', (e) => {
+    if (e.key.length === 1) requestAnimationFrame(() => onBlankEvent(e));
+  }, true);
+  document.addEventListener('change', onBlankEvent, true);
+
+  function restoreProgress() {
+    const saved = loadSave();
+    if (saved.name) {
+      document.getElementById('name-input').value = saved.name;
+      document.getElementById('name-overlay').style.display = 'none';
+      const welcome = document.getElementById('welcome-name');
+      welcome.textContent = 'Welcome, ' + saved.name;
+      welcome.classList.add('visible');
+    }
+    if (saved.blanks) {
+      document.querySelectorAll('input.blank').forEach((b) => {
+        const key = b.getAttribute('data-answer');
+        if (key && saved.blanks[key] != null) {
+          b.value = saved.blanks[key];
+          syncBlankStyle(b);
+        }
+      });
+    }
+    if (saved.reflections) {
+      document.querySelectorAll('textarea.reflection-textarea').forEach((t, i) => {
+        const val = saved.reflections['q' + (i + 1)];
+        if (val != null) t.value = val;
+      });
+    }
+    updateBlankProgress();
+  }
+
+  restoreProgress();
+})();
 </script>
 </body>
 </html>
