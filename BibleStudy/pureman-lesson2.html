@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Pure Man – Lesson Two</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0d1b2a;
+    --navy2: #162032;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --cream: #f5f0e8;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --fill: #1e3a5f;
+    --fill-text: #c9a84c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Crimson Pro', Georgia, serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--navy);
+    padding: 20px 24px 16px;
+    text-align: center;
+    border-bottom: 3px solid var(--gold);
+    position: sticky; top: 0; z-index: 100;
+  }
+  header .brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+  header .brand span { color: var(--gold); }
+  header .subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    color: var(--gold-light);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .session-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .session-code {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    color: var(--gold-light);
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 6px;
+    padding: 4px 12px;
+    letter-spacing: 1px;
+  }
+  .welcome-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    color: var(--gold-light);
+    display: none;
+  }
+  .welcome-name.visible { display: inline; }
+  .lesson-nav {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .lesson-nav a {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #94a3b8;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(201,168,76,0.2);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .lesson-nav a:hover { color: var(--gold-light); border-color: var(--gold); }
+  .lesson-nav a.active {
+    color: var(--gold-light);
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.12);
+  }
+
+  #name-overlay {
+    position: fixed; inset: 0;
+    background: rgba(13,27,42,0.92);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 200;
+    backdrop-filter: blur(4px);
+  }
+  .name-card {
+    background: white;
+    border-radius: 16px;
+    padding: 40px 36px;
+    max-width: 380px;
+    width: 90%;
+    text-align: center;
+    border-top: 4px solid var(--gold);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+  }
+  .name-card .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 3px;
+  }
+  .name-card .logo span { color: var(--gold); }
+  .name-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--navy);
+    margin: 16px 0 8px;
+  }
+  .name-card p {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  .name-input {
+    width: 100%;
+    padding: 12px 16px;
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 12px;
+  }
+  .name-input:focus { border-color: var(--gold); }
+  .btn-join {
+    width: 100%;
+    padding: 13px;
+    background: var(--navy);
+    color: var(--gold-light);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .btn-join:hover { background: var(--fill); }
+  .btn-join:active { transform: scale(0.98); }
+
+  .progress-wrap { background: #e2e8f0; height: 4px; }
+  .progress-bar {
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    transition: width 0.5s ease;
+  }
+
+  main {
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+  .lesson-title { text-align: center; margin-bottom: 36px; }
+  .lesson-title .eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .lesson-title h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+
+  .section {
+    margin-bottom: 36px;
+    opacity: 0;
+    transform: translateY(18px);
+    animation: fadeUp 0.5s ease forwards;
+  }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .section:nth-child(1) { animation-delay: 0.05s; }
+  .section:nth-child(2) { animation-delay: 0.12s; }
+  .section:nth-child(3) { animation-delay: 0.19s; }
+  .section:nth-child(4) { animation-delay: 0.26s; }
+  .section:nth-child(5) { animation-delay: 0.33s; }
+  .section:nth-child(6) { animation-delay: 0.40s; }
+  .section:nth-child(7) { animation-delay: 0.47s; }
+  .section:nth-child(8) { animation-delay: 0.54s; }
+
+  .section-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(201,168,76,0.25);
+  }
+
+  p.body-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #2d3748;
+    margin-bottom: 12px;
+  }
+  p.body-text em { font-style: italic; color: var(--navy); }
+
+  .fitb-line {
+    font-size: 1.15rem;
+    line-height: 2.2;
+    color: #2d3748;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .fitb-line .bullet { color: var(--gold); margin-right: 4px; font-size: 1.2rem; }
+
+  .blank {
+    display: inline-block;
+    min-width: 140px;
+    border: none;
+    border-bottom: 2px solid var(--navy);
+    padding: 2px 6px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--fill);
+    background: transparent;
+    outline: none;
+    letter-spacing: 0.5px;
+    transition: border-color 0.2s, background 0.2s;
+    text-align: center;
+  }
+  .blank::placeholder { color: #cbd5e1; font-weight: 400; letter-spacing: 0; font-size: 0.85rem; font-family: 'DM Sans', sans-serif; }
+  .blank:focus { border-color: var(--gold); background: rgba(201,168,76,0.06); }
+  .blank.filled {
+    border-color: var(--gold);
+    color: var(--navy);
+    background: rgba(201,168,76,0.2);
+    animation: popIn 0.3s ease;
+  }
+  @keyframes popIn { 0%{transform:scale(1)} 50%{transform:scale(1.04)} 100%{transform:scale(1)} }
+
+  .highlight-sentence {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-style: italic;
+    color: var(--navy);
+    border-left: 4px solid var(--gold);
+    padding: 8px 0 8px 16px;
+    margin: 14px 0;
+    line-height: 1.5;
+  }
+
+  .scripture {
+    background: var(--navy);
+    color: #e2e8f0;
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 14px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .scripture::before {
+    content: '"';
+    position: absolute;
+    top: -10px; left: 10px;
+    font-size: 6rem;
+    color: rgba(201,168,76,0.12);
+    font-family: 'Playfair Display', serif;
+    line-height: 1;
+  }
+  .scripture .ref {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .scripture p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #e2e8f0;
+    font-style: italic;
+  }
+
+  .big-fill {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin: 20px 0 14px;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+    line-height: 1.6;
+  }
+  .big-fill .blank { font-size: 1.4rem; min-width: 160px; }
+
+  .bullet-list { list-style: none; margin: 10px 0; }
+  .bullet-list li {
+    font-size: 1.05rem;
+    color: #374151;
+    padding: 3px 0 3px 18px;
+    position: relative;
+    line-height: 1.7;
+  }
+  .bullet-list li::before {
+    content: '›';
+    position: absolute; left: 0;
+    color: var(--gold);
+    font-size: 1.2rem;
+    top: 1px;
+  }
+
+  .checklist { list-style: none; margin: 12px 0; }
+  .checklist li {
+    font-size: 1.05rem;
+    color: #374151;
+    padding: 6px 0 6px 28px;
+    position: relative;
+    line-height: 1.65;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .checklist li::before {
+    content: '✓';
+    position: absolute; left: 0;
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .opponents-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 16px;
+    margin: 12px 0;
+  }
+  .opponents-list li {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: #374151;
+    padding: 4px 0 4px 14px;
+    position: relative;
+  }
+  .opponents-list li::before {
+    content: '•';
+    position: absolute; left: 0;
+    color: var(--gold);
+  }
+
+  .poem-box {
+    background: white;
+    border-left: 4px solid var(--gold);
+    padding: 18px 20px;
+    margin: 16px 0;
+    font-style: italic;
+    line-height: 1.9;
+    color: var(--navy);
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .poem-box .attrib {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-style: normal;
+    color: var(--muted);
+    margin-top: 10px;
+    letter-spacing: 1px;
+  }
+
+  .reflection-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-top: 3px solid var(--gold);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .reflection-card .q-num {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .reflection-card .q-text {
+    font-size: 1.05rem;
+    color: var(--navy);
+    line-height: 1.6;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .reflection-textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-family: 'Crimson Pro', serif;
+    font-size: 1rem;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 6px;
+    resize: none;
+    outline: none;
+    color: var(--text);
+    transition: border-color 0.2s;
+    min-height: 70px;
+  }
+  .reflection-textarea:focus { border-color: var(--gold); }
+  .reflection-textarea::placeholder { color: #94a3b8; font-style: italic; }
+
+  .declaration-box {
+    background: var(--navy);
+    border-radius: 12px;
+    padding: 28px 24px;
+    text-align: center;
+    border: 1px solid rgba(201,168,76,0.3);
+  }
+  .declaration-box .dec-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+  .declaration-lines { text-align: left; }
+  .declaration-lines p {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    color: #cbd5e1;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 6px;
+  }
+  .declaration-lines p strong {
+    color: var(--gold-light);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .progress-indicator {
+    position: fixed;
+    bottom: 20px; right: 20px;
+    background: var(--navy);
+    color: var(--gold-light);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(201,168,76,0.3);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 50;
+  }
+
+  @media (max-width: 480px) {
+    .big-fill { font-size: 1.2rem; }
+    .lesson-title h1 { font-size: 1.5rem; }
+    .blank { min-width: 110px; }
+    .opponents-list { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div id="name-overlay">
+  <div class="name-card">
+    <div class="logo">PURE<span>MAN</span></div>
+    <h2>Welcome, Brother</h2>
+    <p>Enter your name to join the study session and follow along with the lesson.</p>
+    <input class="name-input" id="name-input" type="text" placeholder="Your first name..." maxlength="20" autofocus>
+    <button class="btn-join" id="btn-join" type="button">Join Session</button>
+  </div>
+</div>
+
+<header>
+  <div class="brand">PURE<span>MAN</span></div>
+  <div class="subtitle">Men's Bible Study · Lesson Two</div>
+  <div class="session-bar">
+    <span class="session-code">SESSION: PUREMAN-L2</span>
+    <span id="welcome-name" class="welcome-name"></span>
+  </div>
+  <nav class="lesson-nav">
+    <a href="index.html">Lesson One</a>
+    <a href="pureman-lesson2.html" class="active">Lesson Two</a>
+  </nav>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+</div>
+
+<main>
+  <div class="lesson-title">
+    <div class="eyebrow">Lesson Two · Part 1</div>
+    <h1>The Man in the Arena</h1>
+  </div>
+
+  <!-- Section 1: The Battle -->
+  <div class="section">
+    <div class="section-label">The Battle</div>
+    <p class="body-text">We are in a battle and every man needs to know what victory feels like. The apostle Paul reminds us of the arena that we are in and invites us onto the battlefield:</p>
+    <div class="scripture">
+      <div class="ref">1 Timothy 6:12 (NIV)</div>
+      <p>Fight the good fight of the faith.</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">2 Timothy 2:3–4 (NLT)</div>
+      <p>Endure suffering along with me, as a good soldier of Christ Jesus. Soldiers don't get tied up in the affairs of civilian life, for then they cannot please the officer who enlisted them.</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">Jude 1:3 (NLV)</div>
+      <p>Now I must write to you and tell you to fight hard for the faith...</p>
+    </div>
+    <div class="big-fill">
+      Your
+      <input class="blank" data-blank-id="l2-new1" data-answer="new" placeholder="fill in...">
+      life has
+      <input class="blank" data-blank-id="l2-old1" data-answer="old" placeholder="fill in...">
+      foes.
+    </div>
+    <p class="body-text">For those who have put their trust in Jesus, you are promised a new life.</p>
+    <div class="scripture">
+      <div class="ref">2 Corinthians 5:17 (NIV)</div>
+      <p>If anyone is in Christ, the new creation has come: The old has gone, the new is here!</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">Romans 8:37 (NIV)</div>
+      <p>In all these things we are more than conquerors through him who loved us.</p>
+    </div>
+  </div>
+
+  <!-- Section 2: Old Struggles -->
+  <div class="section">
+    <div class="section-label">Old Struggles</div>
+    <p class="body-text"><strong>If we have new life, why do we have old struggles?</strong></p>
+    <div class="big-fill">
+      Our
+      <input class="blank" data-blank-id="l2-old2" data-answer="old" placeholder="fill in...">
+      nature continues to
+      <input class="blank" data-blank-id="l2-battle" data-answer="battle" placeholder="fill in...">
+      our
+      <input class="blank" data-blank-id="l2-new2" data-answer="new" placeholder="fill in...">
+      nature.
+    </div>
+    <div class="scripture">
+      <div class="ref">Galatians 5:17 (NLT)</div>
+      <p>The sinful nature wants to do evil, which is just the opposite of what the Spirit wants. And the Spirit gives us desires that are the opposite of what the sinful nature desires. These two forces are constantly fighting each other, so you are not free to carry out your good intentions.</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">Romans 7:21–23 (NLT)</div>
+      <p>I have discovered this principle of life—that when I want to do what is right, I inevitably do what is wrong. I love God's law with all my heart. But there is another power within me that is at war with my mind. This power makes me a slave to the sin that is still within me.</p>
+    </div>
+  </div>
+
+  <!-- Section 3: Renew Your Mind -->
+  <div class="section">
+    <div class="section-label">Renew Your Mind</div>
+    <div class="fitb-line">
+      Our
+      <input class="blank" data-blank-id="l2-minds" data-answer="minds" placeholder="fill in...">
+      need to be
+      <input class="blank" data-blank-id="l2-continually" data-answer="continually" placeholder="fill in...">
+      renewed.
+    </div>
+    <div class="scripture">
+      <div class="ref">Romans 12:2 (NIV)</div>
+      <p>Do not conform to the pattern of this world, but be transformed by the renewing of your mind.</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">Ephesians 4:22–23 (NLT)</div>
+      <p>...throw off your old sinful nature and your former way of life, which is corrupted by lust and deception. Instead, let the Spirit renew your thoughts and attitudes.</p>
+    </div>
+    <div class="fitb-line">
+      We are
+      <input class="blank" data-blank-id="l2-entangled" data-answer="entangled" placeholder="fill in...">
+      by old
+      <input class="blank" data-blank-id="l2-patterns" data-answer="patterns" placeholder="fill in...">
+      and
+      <input class="blank" data-blank-id="l2-perspectives" data-answer="perspectives" placeholder="fill in...">
+      .
+    </div>
+    <div class="scripture">
+      <div class="ref">Hebrews 12:1 (NIV)</div>
+      <p>Therefore, since we are surrounded by such a great cloud of witnesses, let us throw off everything that hinders and the sin that so easily entangles. And let us run with perseverance the race marked out for us,</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">2 Timothy 2:25–26 (NLT)</div>
+      <p>Then they will come to their senses and escape from the devil's trap. For they have been held captive by him to do whatever he wants.</p>
+    </div>
+  </div>
+
+  <!-- Section 4: Know Your Enemy -->
+  <div class="section">
+    <div class="section-label">Know Your Enemy</div>
+    <div class="fitb-line">
+      The
+      <input class="blank" data-blank-id="l2-enemy" data-answer="enemy" placeholder="fill in...">
+      knows our
+      <input class="blank" data-blank-id="l2-weak-spots" data-answer="weak spots" placeholder="fill in..." style="min-width:180px;">
+      .
+    </div>
+    <div class="scripture">
+      <div class="ref">2 Corinthians 2:11 (ESV)</div>
+      <p>...so that we would not be outwitted by Satan; for we are not ignorant of his designs.</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">Ephesians 6:11 (NIV)</div>
+      <p>Put on the full armor of God, so that you can take your stand against the devil's schemes.</p>
+    </div>
+    <div class="highlight-sentence">Learn how to <input class="blank" data-blank-id="l2-fight" data-answer="fight" placeholder="fill in..." style="min-width:100px; font-size:1.35rem;">.</div>
+    <p class="body-text">The arena is real. The battles we face are real; they are challenging; and if we don't learn to fight against them, they will wreak havoc on every part of our life.</p>
+    <div class="scripture">
+      <div class="ref">John 10:10 (NIV)</div>
+      <p>The thief comes only to steal and kill and destroy...</p>
+    </div>
+    <p class="body-text"><strong>The enemy brings opposition that, if not dealt with, becomes:</strong></p>
+    <div class="fitb-line">
+      <span class="bullet">›</span>
+      <input class="blank" data-blank-id="l2-problematic" data-answer="problematic" placeholder="fill in...">
+      — it's not easily resolved; it creates difficulty and complications.
+    </div>
+    <div class="fitb-line">
+      <span class="bullet">›</span>
+      <input class="blank" data-blank-id="l2-pervasive" data-answer="pervasive" placeholder="fill in...">
+      — it's present everywhere—you can't easily avoid it.
+    </div>
+    <div class="fitb-line">
+      <span class="bullet">›</span>
+      <input class="blank" data-blank-id="l2-persistent" data-answer="persistent" placeholder="fill in...">
+      — it keeps coming back, refusing to stop; it doesn't go away.
+    </div>
+    <div class="fitb-line">
+      <span class="bullet">›</span>
+      <input class="blank" data-blank-id="l2-potent" data-answer="potent" placeholder="fill in...">
+      — it has the power to shape and influence your life—it has real impact.
+    </div>
+    <div class="highlight-sentence">You are already in the arena. Don't be a punching bag for the devil. Don't be naive to traps and temptations. Wise up, ready yourself, and fight back!</div>
+  </div>
+
+  <!-- Section 5: Four Principles -->
+  <div class="section">
+    <div class="section-label">Four Principles to Winning in the Arena</div>
+    <div class="fitb-line">
+      <span class="bullet">*</span>
+      <input class="blank" data-blank-id="l2-know" data-answer="know" placeholder="fill in...">
+      your
+      <input class="blank" data-blank-id="l2-opponents" data-answer="opponents" placeholder="fill in...">
+      .
+    </div>
+    <div class="scripture">
+      <div class="ref">1 Peter 5:8 (NLT)</div>
+      <p>Stay alert! Watch out for your great enemy, the devil. He prowls around like a roaring lion, looking for someone to devour.</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">Ephesians 6:12 (NIV)</div>
+      <p>For our struggle is not against flesh and blood, but against the rulers, against the authorities, against the powers of this dark world and against the spiritual forces of evil in the heavenly realms</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">Galatians 5:16–17 (TPT)</div>
+      <p>So then, the two incompatible and conflicting forces within you are your self-life of the flesh and the new creation life of the Spirit.</p>
+    </div>
+    <p class="body-text"><strong>Common opponents to men:</strong></p>
+    <ul class="opponents-list bullet-list">
+      <li>anger</li>
+      <li>arrogance</li>
+      <li>sexual promiscuity</li>
+      <li>sexual passivity (for married men)</li>
+      <li>selfish ambition</li>
+      <li>self reliance</li>
+      <li>passivity and avoidance</li>
+      <li>work-life imbalance</li>
+      <li>insignificance</li>
+      <li>insufficiency — never have enough, never are enough</li>
+      <li>acceptance</li>
+    </ul>
+    <div class="fitb-line">
+      <span class="bullet">*</span>
+      <input class="blank" data-blank-id="l2-engage" data-answer="engage" placeholder="fill in...">
+      in the
+      <input class="blank" data-blank-id="l2-battle2" data-answer="battle" placeholder="fill in...">
+      .
+    </div>
+    <div class="scripture">
+      <div class="ref">Ephesians 6:11 (NIV)</div>
+      <p>Put on the full armor of God, so that you can take your stand against the devil's schemes.</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">James 4:7 (AMPC)</div>
+      <p>So be subject to God. Resist the devil [stand firm against him], and he will flee from you.</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">2 Thessalonians 3:3 (AMP)</div>
+      <p>But the Lord is faithful, and He will strengthen you [setting you on a firm foundation] and will protect and guard you from the evil one.</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">Matthew 11:12 (NKJV)</div>
+      <p>And from the days of John the Baptist until now the kingdom of heaven suffers violence, and the violent take it by force.</p>
+    </div>
+    <div class="fitb-line">
+      <span class="bullet">*</span>
+      Let
+      <input class="blank" data-blank-id="l2-god" data-answer="God" placeholder="fill in...">
+      <input class="blank" data-blank-id="l2-define" data-answer="define" placeholder="fill in...">
+      what's
+      <input class="blank" data-blank-id="l2-possible" data-answer="possible" placeholder="fill in...">
+      .
+    </div>
+    <p class="body-text"><strong>Some of us have given in to defeat. This happens because:</strong></p>
+    <ul class="checklist">
+      <li>You haven't seen changes that you desired.</li>
+      <li>The battles and temptations you face feel too difficult and overwhelming.</li>
+      <li>You think the odds are stacked against you.</li>
+      <li>Problems stack on top of problems.</li>
+      <li>You've been told your whole life. You have taken on the label of defeated.</li>
+      <li>You've seen generational battles last generations.</li>
+      <li>You've subscribed to a win some, lose some mentality or way of living.</li>
+      <li>You feel that God can forgive others, but he wouldn't forgive you.</li>
+    </ul>
+    <div class="highlight-sentence">Today's setbacks don't determine tomorrow's victories. God determines what's possible.</div>
+    <div class="scripture">
+      <div class="ref">Zechariah 4:6 (NKJV)</div>
+      <p>So he answered and said to me: "This is the word of the Lord to Zerubbabel: 'Not by might nor by power, but by My Spirit,' Says the Lord of hosts."</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">Matthew 19:26 (NLT)</div>
+      <p>Jesus looked at them intently and said, "Humanly speaking, it is impossible. But with God everything is possible."</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">Luke 1:37 (NKJV)</div>
+      <p>For with God nothing will be impossible.</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">Jeremiah 32:27 (NLT)</div>
+      <p>"I am the Lord, the God of all the peoples of the world. Is anything too hard for me?"</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">Mark 9:23 (NLT)</div>
+      <p>"What do you mean, 'If I can'?" Jesus asked. "Anything is possible if a person believes."</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">Ephesians 3:20 (GW)</div>
+      <p>Glory belongs to God, whose power is at work in us. By this power he can do infinitely more than we can ask or imagine.</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">Job 42:2 (NIV)</div>
+      <p>"I know that you can do all things; no purpose of yours can be thwarted."</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">Philippians 4:13 (NKJV)</div>
+      <p>I can do all things through Christ who strengthens me.</p>
+    </div>
+    <div class="poem-box">
+      There is nothing too big,<br>
+      There is nothing too small,<br>
+      There is nothing that has lingered on too long.<br>
+      There is nothing too great with power or might.<br>
+      There is nothing that can outsmart God or take Him in a fight;<br>
+      And there is nothing too hidden that God cannot see.<br>
+      All you need is to believe that with God, there is a possibility.
+      <div class="attrib">— Anonymous</div>
+    </div>
+    <div class="fitb-line">
+      <span class="bullet">*</span>
+      Take
+      <input class="blank" data-blank-id="l2-action" data-answer="action" placeholder="fill in...">
+      and
+      <input class="blank" data-blank-id="l2-stick" data-answer="stick" placeholder="fill in...">
+      with it.
+    </div>
+    <div class="scripture">
+      <div class="ref">James 2:14–26 (NLT)</div>
+      <p>What good is it, dear brothers and sisters, if you say you have faith but don't show it by your actions? Can that kind of faith save anyone?</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">John 5:6 (NIV)</div>
+      <p>When Jesus saw him lying there and learned that he had been in this condition for a long time, he asked him, "Do you want to get well?" ... Then Jesus said to him, "Get up! Pick up your mat and walk." At once the man was cured; he picked up his mat and walked.</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">2 Kings 5:13–14 (NLT)</div>
+      <p>But his officers tried to reason with him and said, "Sir, if the prophet had told you to do something very difficult, wouldn't you have done it? So you should certainly obey him when he says simply, 'Go and wash and be cured!'" So Naaman went down to the Jordan River and dipped himself seven times, as the man of God had instructed him. And his skin became as healthy as the skin of a young child, and he was healed!</p>
+    </div>
+  </div>
+
+  <!-- Section 6: Reflection Questions -->
+  <div class="section">
+    <div class="section-label">Reflection Questions</div>
+
+    <div class="reflection-card">
+      <div class="q-num">Question 1</div>
+      <div class="q-text">Describe in your own words what it means to be in a battle.</div>
+      <textarea class="reflection-textarea" placeholder="Share your thoughts..."></textarea>
+    </div>
+
+    <div class="reflection-card">
+      <div class="q-num">Question 2</div>
+      <div class="q-text">If we have new life in Christ, why do we continue to struggle with old problems and behaviors?</div>
+      <textarea class="reflection-textarea" placeholder="Your thoughts..."></textarea>
+    </div>
+
+    <div class="reflection-card">
+      <div class="q-num">Question 3</div>
+      <div class="q-text">Review the definitions of the words below. List areas in your life that have become:</div>
+      <p style="font-size:0.9rem; color:var(--muted); margin-bottom:8px; font-family:'DM Sans',sans-serif;">Problematic · Pervasive · Persistent · Potent</p>
+      <textarea class="reflection-textarea" placeholder="List specific areas in your life..."></textarea>
+    </div>
+
+    <div class="reflection-card">
+      <div class="q-num">Question 4</div>
+      <div class="q-text">Define the word "engage". How does this apply to winning battles in your life?</div>
+      <textarea class="reflection-textarea" placeholder="Your definition and application..."></textarea>
+    </div>
+
+    <div class="reflection-card">
+      <div class="q-num">Question 5</div>
+      <div class="q-text">On a scale of 1–10, how seriously are you engaging the fight right now? Describe what it would look like to move toward a 10.</div>
+      <textarea class="reflection-textarea" placeholder="Your rating and what a 10 looks like..."></textarea>
+    </div>
+
+    <div class="reflection-card">
+      <div class="q-num">Question 6</div>
+      <div class="q-text">Where have you lowered your belief of what God can do in your life? What would change if you genuinely believed: "With God, I can overcome this?"</div>
+      <textarea class="reflection-textarea" placeholder="Be honest..."></textarea>
+    </div>
+
+    <div class="reflection-card">
+      <div class="q-num">Question 7</div>
+      <div class="q-text">What is something simple God is asking you to do that you've been avoiding?</div>
+      <textarea class="reflection-textarea" placeholder="What have you been avoiding?"></textarea>
+    </div>
+
+    <div class="reflection-card">
+      <div class="q-num">Question 8</div>
+      <div class="q-text">Where have you started strong but failed to stick with it?</div>
+      <textarea class="reflection-textarea" placeholder="Share your experience..."></textarea>
+    </div>
+
+    <div class="reflection-card">
+      <div class="q-num">Question 9</div>
+      <div class="q-text">What will you commit to doing daily this week, no matter how you feel?</div>
+      <textarea class="reflection-textarea" placeholder='This week I will ... as I take my stand against the enemy, trusting that God is strengthening me, guarding me, and fighting with me.'></textarea>
+    </div>
+  </div>
+
+  <!-- Section 7: Key Takeaways -->
+  <div class="section">
+    <div class="section-label">Key Takeaways</div>
+    <div class="declaration-box">
+      <div class="dec-label">Lesson Two Summary</div>
+      <div class="declaration-lines">
+        <p>Your <strong>new</strong> life has <strong>old</strong> foes.</p>
+        <p>Our <strong>old</strong> nature continues to <strong>battle</strong> our <strong>new</strong> nature.</p>
+        <p>Our <strong>minds</strong> need to be <strong>continually</strong> renewed.</p>
+        <p>We are <strong>entangled</strong> by old <strong>patterns</strong> and <strong>perspectives</strong>.</p>
+        <p>The <strong>enemy</strong> knows our <strong>weak spots</strong>.</p>
+        <p>Learn how to <strong>fight</strong>.</p>
+        <p style="margin-top:14px; border-top:1px solid rgba(201,168,76,0.2); padding-top:14px;"><strong>Know</strong> your opponents. <strong>Engage</strong> in the <strong>battle</strong>. Let <strong>God define</strong> what's <strong>possible</strong>. Take <strong>action</strong> and <strong>stick</strong> with it.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<div class="progress-indicator" id="progress-indicator">0 / 26 blanks filled</div>
+
+<script>
+(function () {
+  const STORAGE_KEY = 'pureman-l2';
+  const NAME_KEY = 'pureman-name';
+  let saveTimer;
+
+  function blankKey(el) {
+    return el.getAttribute('data-blank-id') || el.getAttribute('data-answer');
+  }
+
+  function loadSave() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (_) {
+      return {};
+    }
+  }
+
+  function saveAll() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      const data = { version: 1, blanks: {}, reflections: {}, updatedAt: new Date().toISOString() };
+      const nameInput = document.getElementById('name-input');
+      const welcome = document.getElementById('welcome-name');
+      let name = nameInput ? nameInput.value.trim() : '';
+      if (!name && welcome && welcome.classList.contains('visible')) {
+        name = welcome.textContent.replace(/^Welcome,\s*/, '').trim();
+      }
+      if (name) {
+        data.name = name;
+        try { localStorage.setItem(NAME_KEY, name); } catch (_) {}
+      }
+
+      document.querySelectorAll('input.blank').forEach((b) => {
+        const key = blankKey(b);
+        if (key && b.value.trim()) data.blanks[key] = b.value;
+      });
+      document.querySelectorAll('textarea.reflection-textarea').forEach((t, i) => {
+        if (t.value.trim()) data.reflections['q' + (i + 1)] = t.value;
+      });
+
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (_) {}
+    }, 300);
+  }
+
+  function enterSession(name) {
+    document.getElementById('name-overlay').style.display = 'none';
+    const welcome = document.getElementById('welcome-name');
+    welcome.textContent = 'Welcome, ' + name;
+    welcome.classList.add('visible');
+    saveAll();
+  }
+
+  function joinSession() {
+    const val = document.getElementById('name-input').value.trim();
+    if (!val) { document.getElementById('name-input').focus(); return; }
+    enterSession(val);
+  }
+
+  document.getElementById('btn-join').addEventListener('click', joinSession);
+  document.getElementById('name-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') joinSession();
+  });
+
+  function norm(s) {
+    return String(s || '').trim().toLowerCase().replace(/\s+/g, ' ');
+  }
+
+  function autofillBlank(input) {
+    const answer = input.getAttribute('data-answer');
+    if (!answer) return;
+    const typed = norm(input.value);
+    const target = norm(answer);
+    if (!typed) {
+      input.classList.remove('filled');
+      input.placeholder = 'fill in...';
+      return;
+    }
+    if (target.startsWith(typed)) {
+      input.value = answer;
+      input.classList.add('filled');
+      input.placeholder = '';
+    } else {
+      input.classList.remove('filled');
+    }
+  }
+
+  function syncBlankStyle(input) {
+    const answer = input.getAttribute('data-answer');
+    if (!answer) return;
+    if (norm(input.value) === norm(answer)) {
+      input.classList.add('filled');
+      input.placeholder = '';
+    } else if (!input.value.trim()) {
+      input.classList.remove('filled');
+      input.placeholder = 'fill in...';
+    } else {
+      input.classList.remove('filled');
+    }
+  }
+
+  function updateBlankProgress() {
+    const blanks = document.querySelectorAll('input.blank');
+    let filled = 0;
+    blanks.forEach((b) => {
+      const ans = b.getAttribute('data-answer');
+      if (ans && norm(b.value) === norm(ans)) filled++;
+    });
+    const bar = document.getElementById('progress-bar');
+    const label = document.getElementById('progress-indicator');
+    const pct = blanks.length ? Math.round((filled / blanks.length) * 100) : 0;
+    if (bar) bar.style.width = pct + '%';
+    if (label) label.textContent = filled + ' / ' + blanks.length + ' blanks filled';
+  }
+
+  function onBlankEvent(e) {
+    const input = e.target;
+    if (!(input instanceof HTMLInputElement) || !input.classList.contains('blank')) return;
+    autofillBlank(input);
+    updateBlankProgress();
+    saveAll();
+  }
+
+  document.querySelectorAll('input.blank').forEach((input) => {
+    input.setAttribute('autocomplete', 'off');
+    input.setAttribute('spellcheck', 'false');
+    input.addEventListener('focus', () => {
+      const answer = input.getAttribute('data-answer');
+      if (answer && !norm(input.value)) {
+        input.placeholder = 'Type "' + answer.charAt(0) + '" to autofill…';
+      }
+    });
+    input.addEventListener('blur', () => {
+      if (!norm(input.value)) input.placeholder = 'fill in...';
+    });
+  });
+
+  document.querySelectorAll('textarea.reflection-textarea').forEach((ta) => {
+    ta.addEventListener('input', () => saveAll());
+  });
+
+  document.addEventListener('input', onBlankEvent, true);
+  document.addEventListener('keyup', onBlankEvent, true);
+  document.addEventListener('keydown', (e) => {
+    if (e.key.length === 1) requestAnimationFrame(() => onBlankEvent(e));
+  }, true);
+  document.addEventListener('change', onBlankEvent, true);
+
+  function restoreProgress() {
+    const saved = loadSave();
+    let name = saved.name;
+    if (!name) {
+      try { name = localStorage.getItem(NAME_KEY) || ''; } catch (_) {}
+    }
+    if (name) {
+      document.getElementById('name-input').value = name;
+      document.getElementById('name-overlay').style.display = 'none';
+      const welcome = document.getElementById('welcome-name');
+      welcome.textContent = 'Welcome, ' + name;
+      welcome.classList.add('visible');
+    }
+    if (saved.blanks) {
+      document.querySelectorAll('input.blank').forEach((b) => {
+        const key = blankKey(b);
+        if (key && saved.blanks[key] != null) {
+          b.value = saved.blanks[key];
+          syncBlankStyle(b);
+        }
+      });
+    }
+    if (saved.reflections) {
+      document.querySelectorAll('textarea.reflection-textarea').forEach((t, i) => {
+        const val = saved.reflections['q' + (i + 1)];
+        if (val != null) t.value = val;
+      });
+    }
+    updateBlankProgress();
+  }
+
+  restoreProgress();
+})();
+</script>
+</body>
+</html>

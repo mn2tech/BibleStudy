@@ -79,6 +79,31 @@
     display: none;
   }
   .welcome-name.visible { display: inline; }
+  .lesson-nav {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .lesson-nav a {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #94a3b8;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(201,168,76,0.2);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .lesson-nav a:hover { color: var(--gold-light); border-color: var(--gold); }
+  .lesson-nav a.active {
+    color: var(--gold-light);
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.12);
+  }
 
   /* Name entry overlay */
   #name-overlay {
@@ -488,6 +513,10 @@
     <span class="session-code">SESSION: PUREMAN-L1</span>
     <span id="welcome-name" class="welcome-name"></span>
   </div>
+  <nav class="lesson-nav">
+    <a href="index.html" class="active">Lesson One</a>
+    <a href="pureman-lesson2.html">Lesson Two</a>
+  </nav>
 </header>
 
 <!-- Progress bar -->
@@ -755,6 +784,7 @@
 <script>
 (function () {
   const STORAGE_KEY = 'pureman-l1';
+  const NAME_KEY = 'pureman-name';
   let saveTimer;
 
   function loadSave() {
@@ -776,7 +806,10 @@
       if (!name && welcome && welcome.classList.contains('visible')) {
         name = welcome.textContent.replace(/^Welcome,\s*/, '').trim();
       }
-      if (name) data.name = name;
+      if (name) {
+        data.name = name;
+        try { localStorage.setItem(NAME_KEY, name); } catch (_) {}
+      }
 
       document.querySelectorAll('input.blank').forEach((b) => {
         const key = b.getAttribute('data-answer');
@@ -903,11 +936,15 @@
 
   function restoreProgress() {
     const saved = loadSave();
-    if (saved.name) {
-      document.getElementById('name-input').value = saved.name;
+    let name = saved.name;
+    if (!name) {
+      try { name = localStorage.getItem(NAME_KEY) || ''; } catch (_) {}
+    }
+    if (name) {
+      document.getElementById('name-input').value = name;
       document.getElementById('name-overlay').style.display = 'none';
       const welcome = document.getElementById('welcome-name');
-      welcome.textContent = 'Welcome, ' + saved.name;
+      welcome.textContent = 'Welcome, ' + name;
       welcome.classList.add('visible');
     }
     if (saved.blanks) {
