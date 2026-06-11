@@ -82,14 +82,14 @@
 
   /* Home page */
   main {
-    max-width: 860px;
+    max-width: 1080px;
     margin: 0 auto;
     padding: 48px 20px 80px;
   }
 
   .cards {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 24px;
   }
 
@@ -155,7 +155,7 @@
   .card-btn:hover { background: var(--navy); }
   .card-btn:active { transform: scale(0.98); }
 
-  @media (max-width: 640px) {
+  @media (max-width: 900px) {
     .cards {
       grid-template-columns: 1fr;
     }
@@ -175,8 +175,15 @@
     <article class="card">
       <div class="card-label">Lesson 1</div>
       <h2 class="card-title">Embracing the "P" Word</h2>
-      <p class="card-subtitle">Man in the Arena · Part 1</p>
+      <p class="card-subtitle">Lesson One</p>
       <a class="card-btn" href="pureman-lesson1.html">Open Lesson →</a>
+    </article>
+
+    <article class="card">
+      <div class="card-label">Lesson 2</div>
+      <h2 class="card-title">The Man in the Arena</h2>
+      <p class="card-subtitle">Man in the Arena · Part 1</p>
+      <a class="card-btn" href="pureman-lesson2.html">Open Lesson →</a>
     </article>
 
     <article class="card">
