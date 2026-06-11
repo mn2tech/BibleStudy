@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pure Man – Lesson Three</title>
+<style>
+  :root {
+    --black: #0f0f0f;
+    --dark: #1a1a1a;
+    --card: #242424;
+    --border: #333;
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --red: #c0392b;
+    --white: #f0ede8;
+    --muted: #888;
+    --green: #27ae60;
+    --blue: #2980b9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Georgia', serif;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--dark);
+    border-bottom: 3px solid var(--gold);
+    padding: 24px 20px 20px;
+    text-align: center;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .brand {
+    font-family: 'Arial Black', sans-serif;
+    font-size: clamp(28px, 7vw, 52px);
+    letter-spacing: 4px;
+    color: var(--white);
+    text-transform: uppercase;
+  }
+  .brand span { color: var(--gold); }
+  .lesson-title {
+    margin-top: 6px;
+    font-size: clamp(11px, 2.5vw, 14px);
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+  }
+  .lesson-sub {
+    font-size: clamp(9px, 2vw, 12px);
+    color: var(--muted);
+    font-family: Arial, sans-serif;
+    margin-top: 3px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ── PROGRESS ── */
+  .progress-bar-wrap {
+    background: var(--dark);
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .progress-bar-track {
+    flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 3px; transition: width 0.4s ease;
+  }
+  .progress-label { font-size: 11px; color: var(--muted); font-family: Arial, sans-serif; white-space: nowrap; }
+
+  /* ── MEMBERS BAR ── */
+  .members-bar {
+    background: var(--dark);
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  }
+  .members-label { font-size: 11px; color: var(--muted); font-family: Arial, sans-serif; margin-right: 4px; text-transform: uppercase; letter-spacing: 1px; }
+  .member-chip {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 4px 12px 4px 8px;
+    font-size: 12px; font-family: Arial, sans-serif; cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .member-chip.active { border-color: var(--gold); color: var(--gold); }
+  .member-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* ── MAIN CONTENT ── */
+  main { max-width: 820px; margin: 0 auto; padding: 24px 16px 60px; }
+
+  /* ── SECTIONS ── */
+  .section {
+    margin-bottom: 28px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .section-header {
+    background: var(--dark);
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--gold); color: var(--black);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: bold; font-family: Arial, sans-serif;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--white);
+  }
+  .section-body { padding: 20px; }
+
+  /* ── INTRO TEXT ── */
+  .intro-text {
+    font-size: 15px; line-height: 1.7; color: #bbb;
+    margin-bottom: 16px;
+  }
+
+  /* ── STATS BLOCK ── */
+  .stats-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 4px;
+  }
+  @media(max-width: 520px) { .stats-grid { grid-template-columns: 1fr; } }
+  .stat-pill {
+    background: var(--dark);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #ccc;
+    font-family: Arial, sans-serif;
+  }
+  .stat-pill .stat-num { font-size: 22px; font-weight: bold; color: var(--red); font-family: Arial, sans-serif; display: block; }
+
+  /* ── FILL IN BLANK ── */
+  .fill-sentence {
+    font-size: 16px; line-height: 2.2; color: var(--white);
+    margin-bottom: 12px;
+  }
+  .blank {
+    display: inline-block;
+    min-width: 100px;
+    border-bottom: 2px solid var(--gold);
+    padding: 2px 4px;
+    text-align: center;
+    color: var(--gold-light);
+    font-weight: bold;
+    font-style: italic;
+    transition: all 0.3s;
+    cursor: pointer;
+    position: relative;
+  }
+  .blank.empty {
+    color: transparent;
+    background: rgba(201,168,76,0.08);
+    border-radius: 3px 3px 0 0;
+  }
+  .blank.empty::after { content: "tap to reveal"; color: var(--muted); font-size: 10px; font-style: normal; font-weight: normal; position: absolute; left: 50%; transform: translateX(-50%); bottom: -16px; white-space: nowrap; }
+  .blank.revealed { color: var(--gold-light); background: rgba(201,168,76,0.1); border-radius: 3px 3px 0 0; }
+
+  /* ── BULLET LIST ── */
+  .bullet-list { list-style: none; padding: 0; }
+  .bullet-list li {
+    display: flex; gap: 10px; padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 14px; line-height: 1.5; color: #ccc;
+    font-family: Arial, sans-serif;
+  }
+  .bullet-list li:last-child { border-bottom: none; }
+  .bullet-list li::before { content: "•"; color: var(--gold); flex-shrink: 0; margin-top: 1px; }
+
+  /* ── SCRIPTURE BLOCK ── */
+  .scripture {
+    background: var(--dark);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 16px;
+    margin: 12px 0;
+  }
+  .scripture-ref {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .scripture-text { font-size: 14px; line-height: 1.7; color: #d0ccc4; font-style: italic; }
+
+  /* ── STRATEGIES ── */
+  .strategies { display: flex; flex-direction: column; gap: 12px; }
+  .strategy-card {
+    background: var(--dark);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .strategy-icon {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .strategy-info { flex: 1; }
+  .strategy-label {
+    font-family: Arial, sans-serif;
+    font-size: 13px; font-weight: bold;
+    letter-spacing: 1px; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .strategy-scriptures { font-size: 12px; color: var(--muted); font-family: Arial, sans-serif; }
+
+  /* ── REFLECTION QUESTIONS ── */
+  .question-card {
+    background: var(--dark);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .question-card:last-child { margin-bottom: 0; }
+  .question-num { font-size: 11px; color: var(--gold); font-family: Arial, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .question-text { font-size: 14px; line-height: 1.6; color: var(--white); margin-bottom: 12px; }
+  .answer-area {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    width: 100%;
+    color: var(--white);
+    font-family: Georgia, serif;
+    font-size: 13px;
+    line-height: 1.6;
+    resize: vertical;
+    min-height: 70px;
+    transition: border-color 0.2s;
+  }
+  .answer-area:focus { outline: none; border-color: var(--gold); }
+
+  /* ── MEMBER ANSWER TAG ── */
+  .member-answers { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .answer-tag {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 4px; padding: 4px 8px;
+    font-size: 11px; font-family: Arial, sans-serif; color: #aaa;
+  }
+  .answer-tag .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── WEAK AREA SELECTOR ── */
+  .area-buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+  .area-btn {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 6px; padding: 10px 16px;
+    font-size: 13px; font-family: Arial, sans-serif; color: #aaa;
+    cursor: pointer; transition: all 0.2s; flex: 1; min-width: 130px; text-align: center;
+  }
+  .area-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .area-btn.selected { background: rgba(201,168,76,0.12); border-color: var(--gold); color: var(--gold-light); font-weight: bold; }
+
+  /* ── DECLARATION BLOCK ── */
+  .declaration {
+    background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.03));
+    border: 1px solid var(--gold);
+    border-radius: 10px;
+    padding: 24px;
+    text-align: center;
+  }
+  .declaration-line {
+    font-size: clamp(14px, 3vw, 17px);
+    line-height: 2;
+    font-style: italic;
+    color: var(--white);
+  }
+  .declaration-line strong { color: var(--gold-light); font-style: normal; }
+
+  /* ── MEMORY VERSE ── */
+  .memory-verse {
+    background: var(--dark);
+    border: 2px solid var(--gold);
+    border-radius: 10px;
+    padding: 22px;
+    margin-bottom: 20px;
+  }
+  .memory-verse .ref { color: var(--gold); font-family: Arial, sans-serif; font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; text-align: center; }
+  .memory-verse .verse-text { font-size: 16px; line-height: 1.8; color: var(--white); text-align: center; font-style: italic; }
+
+  /* ── COMPLETE BUTTON ── */
+  .complete-btn {
+    display: block; width: 100%; margin-top: 24px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--black); border: none; border-radius: 8px;
+    padding: 16px; font-size: 15px; font-family: Arial, sans-serif; font-weight: bold;
+    text-transform: uppercase; letter-spacing: 2px; cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .complete-btn:hover { opacity: 0.9; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    background: var(--green); color: white; padding: 12px 24px; border-radius: 8px;
+    font-family: Arial, sans-serif; font-size: 14px; font-weight: bold;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 999;
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px; background: var(--border); margin: 20px 0;
+  }
+
+  /* ── SMALL LABEL ── */
+  .sub-label {
+    font-size: 11px; color: var(--muted); font-family: Arial, sans-serif;
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+  }
+
+  .highlight-box {
+    background: rgba(201,168,76,0.07);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 14px 0;
+  }
+  .highlight-box p { font-size: 14px; line-height: 1.7; color: #ccc; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="brand">PURE <span>M</span>AN</div>
+  <div class="lesson-title">Lesson Three — Man in the Arena: Part 2</div>
+  <div class="lesson-sub">Not Even a Hint &nbsp;·&nbsp; Pastor Justin McAuliff</div>
+</header>
+
+<!-- PROGRESS -->
+<div class="progress-bar-wrap">
+  <div class="progress-bar-track"><div class="progress-bar-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="progress-label" id="progressLabel">0 of 8 sections</div>
+</div>
+
+<!-- MEMBERS BAR -->
+<div class="members-bar">
+  <span class="members-label">Group</span>
+  <div class="member-chip active" data-id="0" onclick="setActive(0)">
+    <div class="member-dot" style="background:#c9a84c"></div>Michael
+  </div>
+  <div class="member-chip" data-id="1" onclick="setActive(1)">
+    <div class="member-dot" style="background:#2980b9"></div>Member 2
+  </div>
+  <div class="member-chip" data-id="2" onclick="setActive(2)">
+    <div class="member-dot" style="background:#27ae60"></div>Member 3
+  </div>
+  <div class="member-chip" data-id="3" onclick="setActive(3)">
+    <div class="member-dot" style="background:#c0392b"></div>Member 4
+  </div>
+</div>
+
+<!-- MAIN -->
+<main>
+
+  <!-- SECTION 1: CONTEXT -->
+  <div class="section" data-section="0">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div class="section-title">The Battle We're In</div>
+    </div>
+    <div class="section-body">
+      <p class="intro-text">Last week we talked about being in the arena. We identified the enemies that war against us. But there is one tactic the enemy is using that is taking out men by the truckloads:</p>
+
+      <div class="fill-sentence">
+        The enemy's tactic: &nbsp;<span class="blank empty" id="b0" onclick="revealBlank('b0','Sexual temptation')"></span>
+      </div>
+
+      <div class="divider"></div>
+      <div class="sub-label">The Reality — Statistics</div>
+      <div class="stats-grid">
+        <div class="stat-pill"><span class="stat-num">70–80%</span>of men report viewing pornography at least occasionally</div>
+        <div class="stat-pill"><span class="stat-num">57%</span>of men ages 18–30 watch porn at least monthly</div>
+        <div class="stat-pill"><span class="stat-num">44%</span>of men watch porn regularly (monthly or more)</div>
+        <div class="stat-pill"><span class="stat-num">68%</span>of Christian men report viewing pornography regularly</div>
+        <div class="stat-pill"><span class="stat-num">20%</span>of married men report cheating on their spouse</div>
+        <div class="stat-pill"><span class="stat-num">28%</span>of men over 60 admit to infidelity</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: WHY IT'S EVERY MAN'S BATTLE -->
+  <div class="section" data-section="1">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div class="section-title">Every Man's Battle</div>
+    </div>
+    <div class="section-body">
+      <p class="sub-label">Fill in the blanks</p>
+      <div class="fill-sentence">
+        <span class="blank empty" id="b1" onclick="revealBlank('b1','Sexual')"></span>
+        &nbsp;temptation is not&nbsp;
+        <span class="blank empty" id="b2" onclick="revealBlank('b2','one')"></span>
+        &nbsp;man's battle, it's&nbsp;
+        <span class="blank empty" id="b3" onclick="revealBlank('b3','every')"></span>
+        &nbsp;man's battle.
+      </div>
+
+      <div class="divider"></div>
+      <div class="sub-label">Why it hits so hard</div>
+      <ul class="bullet-list">
+        <li>Sexual attraction is in our design.</li>
+        <li>Exposed at an early age.</li>
+        <li>Culture speaks more to sex than the church. What's acceptable and wrong is changing.</li>
+        <li>It's acceptable in the right context.</li>
+        <li>It's easy to hide. It can be quiet and private.</li>
+        <li>It seems like it only affects me.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 3: THE BIBLE'S STANDARD -->
+  <div class="section" data-section="2">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div class="section-title">The Bible Has a Sexual Standard</div>
+    </div>
+    <div class="section-body">
+      <div class="fill-sentence">
+        The&nbsp;<span class="blank empty" id="b4" onclick="revealBlank('b4','Bible')"></span>
+        &nbsp;has a sexual&nbsp;<span class="blank empty" id="b5" onclick="revealBlank('b5','standard')"></span>.
+      </div>
+
+      <div class="divider"></div>
+      <div class="sub-label">The Standard:</div>
+      <div class="fill-sentence" style="margin-bottom:16px;">
+        <span class="blank empty" id="b6" onclick="revealBlank('b6','Not even a hint')"></span>
+      </div>
+
+      <div class="scripture">
+        <div class="scripture-ref">Ephesians 5:3 (NIV)</div>
+        <div class="scripture-text">But among you there must not be even a hint of sexual immorality, or of any kind of impurity, or of greed, because these are improper for God's holy people.</div>
+      </div>
+      <div class="scripture">
+        <div class="scripture-ref">Ephesians 5:3 (AMP)</div>
+        <div class="scripture-text">But sexual immorality and all [moral] impurity [indecent, offensive behavior] or greed must not even be hinted at among you, as is proper among saints [for as believers our way of life, whether in public or in private, reflects the validity of our faith].</div>
+      </div>
+      <div class="scripture">
+        <div class="scripture-ref">Ephesians 5:3 (MSG)</div>
+        <div class="scripture-text">Don't allow love to turn into lust, setting off a downhill slide into sexual promiscuity, filthy practices, or bullying greed.</div>
+      </div>
+      <div class="scripture">
+        <div class="scripture-ref">Matthew 5:28 (CEV)</div>
+        <div class="scripture-text">But I tell you if you look at another woman and want her, you are already unfaithful in your thoughts.</div>
+      </div>
+      <div class="scripture">
+        <div class="scripture-ref">1 Corinthians 6:13; 19b–20 (ESV)</div>
+        <div class="scripture-text">The body is not meant for sexual immorality, but for the Lord, and the Lord for the body… You are not your own; you were bought at a price. Therefore honor God with your bodies.</div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="sub-label">The Application:</div>
+      <div class="fill-sentence">
+        Sexual&nbsp;<span class="blank empty" id="b7" onclick="revealBlank('b7','temptation')"></span>
+        &nbsp;can be&nbsp;<span class="blank empty" id="b8" onclick="revealBlank('b8','overcome')"></span>.
+      </div>
+
+      <div class="highlight-box">
+        <p>Before we dive into addressing sexual sin, we need to understand that the work Jesus completed by dying on the cross for our sins (all sins) and being raised on the third day — overcoming death itself — is the foundation for any and all victory for those who believe in Him.</p>
+      </div>
+
+      <div class="scripture">
+        <div class="scripture-ref">1 Corinthians 15:56–57 (NLT)</div>
+        <div class="scripture-text">For sin is the sting that results in death, and the law gives sin its power. But thank God! He gives us victory over sin and death through our Lord Jesus Christ.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: WHERE TEMPTATION LIVES -->
+  <div class="section" data-section="3">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div class="section-title">Where Temptation Lives</div>
+    </div>
+    <div class="section-body">
+      <p class="intro-text" style="margin-bottom:16px;">Sexual temptation involves your eyes, your mind, and your heart; however, sexual sin is a sin against the body.</p>
+
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div class="strategy-card">
+          <div class="strategy-icon" style="background:rgba(201,168,76,0.15);">👁️</div>
+          <div class="strategy-info">
+            <div class="strategy-label" style="color:var(--gold);">The Eyes</div>
+            <div class="scripture">
+              <div class="scripture-ref">Job 31:1 (AMP)</div>
+              <div class="scripture-text">I have made a covenant (agreement) with my eyes; How then could I gaze [lustfully] at a virgin?</div>
+            </div>
+            <div class="scripture" style="margin-top:8px;">
+              <div class="scripture-ref">Matthew 6:22–23 (NLT)</div>
+              <div class="scripture-text">Your eye is like a lamp that provides light for your body. When your eye is healthy, your whole body is filled with light. But when your eye is unhealthy, your whole body is filled with darkness.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="strategy-card">
+          <div class="strategy-icon" style="background:rgba(41,128,185,0.15);">🧠</div>
+          <div class="strategy-info">
+            <div class="strategy-label" style="color:#5dade2;">The Mind</div>
+            <div class="scripture">
+              <div class="scripture-ref">Romans 8:6 (AMP)</div>
+              <div class="scripture-text">For those who are living according to the flesh set their minds on the things of the flesh [which gratify the body], but those who are living according to the Spirit, [set their minds on] the things of the Spirit [His will and purpose].</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="strategy-card">
+          <div class="strategy-icon" style="background:rgba(192,57,43,0.15);">❤️</div>
+          <div class="strategy-info">
+            <div class="strategy-label" style="color:#e74c3c;">The Heart</div>
+            <div class="scripture">
+              <div class="scripture-ref">Mark 7:21–23 (CEV)</div>
+              <div class="scripture-text">Out of your heart come evil thoughts, vulgar deeds, stealing, murder, unfaithfulness in marriage, greed, meanness, deceit, indecency, envy, insults, pride, and foolishness. All of these come from your heart, and they are what make you unfit to worship God.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: HOW TO OVERCOME -->
+  <div class="section" data-section="4">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div class="section-title">How to Overcome Sexual Temptation</div>
+    </div>
+    <div class="section-body">
+      <p class="intro-text" style="margin-bottom:16px;">Sexual temptation is sly and stubborn. We need a continual game plan on how to address it in our lives.</p>
+
+      <div class="strategies">
+
+        <!-- EXPOSE -->
+        <div class="strategy-card">
+          <div class="strategy-icon" style="background:rgba(243,156,18,0.15);">🔦</div>
+          <div class="strategy-info">
+            <div class="strategy-label" style="color:#f39c12;">
+              <span class="blank empty" id="bs1" onclick="revealBlank('bs1','Continually Expose')"></span> it.
+            </div>
+            <div class="strategy-scriptures">Psalm 32:3–5 · 1 John 1:9 · James 4:6</div>
+            <div class="scripture" style="margin-top:8px;">
+              <div class="scripture-ref">Psalm 32:3–5 (NIV)</div>
+              <div class="scripture-text">When I kept silent… my strength was sapped… Then I acknowledged my sin… and you forgave the guilt of my sin.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SMOTHER -->
+        <div class="strategy-card">
+          <div class="strategy-icon" style="background:rgba(192,57,43,0.15);">🚫</div>
+          <div class="strategy-info">
+            <div class="strategy-label" style="color:#e74c3c;">
+              <span class="blank empty" id="bs2" onclick="revealBlank('bs2','Continually Smother')"></span> it.
+            </div>
+            <div class="strategy-scriptures">1 Cor 6:12 · Matt 5:29 · Col 3:5 · Romans 13:14</div>
+            <div class="scripture" style="margin-top:8px;">
+              <div class="scripture-ref">Matthew 5:29 (NLT)</div>
+              <div class="scripture-text">So if your eye — even your good eye — causes you to lust, gouge it out and throw it away. It is better for you to lose one part of your body than for your whole body to be thrown into hell.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- GUARD -->
+        <div class="strategy-card">
+          <div class="strategy-icon" style="background:rgba(39,174,96,0.15);">🛡️</div>
+          <div class="strategy-info">
+            <div class="strategy-label" style="color:#2ecc71;">
+              <span class="blank empty" id="bs3" onclick="revealBlank('bs3','Continually Guard')"></span> against it.
+            </div>
+            <div class="strategy-scriptures">Prov 25:28 · Psalm 119:37 · Phil 4:8 · Romans 12:2</div>
+            <div class="scripture" style="margin-top:8px;">
+              <div class="scripture-ref">Philippians 4:8 (ESV)</div>
+              <div class="scripture-text">Finally, brothers, whatever is true, whatever is honorable, whatever is just, whatever is pure, whatever is lovely, whatever is commendable… think about these things.</div>
+            </div>
+            <div class="scripture" style="margin-top:8px;">
+              <div class="scripture-ref">Ecclesiastes 4:9–12 (NIV)</div>
+              <div class="scripture-text">Two are better than one… if either of them falls down, one can help the other up… A cord of three strands is not quickly broken.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HEAL -->
+        <div class="strategy-card">
+          <div class="strategy-icon" style="background:rgba(41,128,185,0.15);">🩹</div>
+          <div class="strategy-info">
+            <div class="strategy-label" style="color:#3498db;">
+              <span class="blank empty" id="bs4" onclick="revealBlank('bs4','Continually Heal')"></span> from it.
+            </div>
+            <div class="strategy-scriptures">Acts 3:19 · James 5:16 · Hebrews 4:16</div>
+            <div class="scripture" style="margin-top:8px;">
+              <div class="scripture-ref">James 5:16 (AMP)</div>
+              <div class="scripture-text">Therefore, confess your sins to one another [your false steps, your offenses], and pray for one another, that you may be healed and restored. The heartfelt and persistent prayer of a righteous man (believer) can accomplish much.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: REFLECTION QUESTIONS -->
+  <div class="section" data-section="5">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <div class="section-title">Reflection Questions</div>
+    </div>
+    <div class="section-body">
+
+      <div class="question-card">
+        <div class="question-num">Question 1</div>
+        <div class="question-text">Why do you think sexual temptation is hitting men so hard right now? Where have you seen its impact — personally or around you?</div>
+        <div class="member-answers" id="ma-q1"></div>
+        <textarea class="answer-area" id="q1" placeholder="Your answer…" oninput="saveAnswer('q1')" rows="3"></textarea>
+      </div>
+
+      <div class="question-card">
+        <div class="question-num">Question 2</div>
+        <div class="question-text">Read the different versions of Ephesians 5:3. Put into your own words the Bible's standard regarding sexual immorality.</div>
+        <div class="member-answers" id="ma-q2"></div>
+        <textarea class="answer-area" id="q2" placeholder="Your answer…" oninput="saveAnswer('q2')" rows="3"></textarea>
+      </div>
+
+      <div class="question-card">
+        <div class="question-num">Question 3</div>
+        <div class="question-text">What does 1 John 3:8, Colossians 2:15, and 1 Corinthians 15:56–57 tell us about the degree of victory one can have over sin? What would be different in your life if you lived in this reality?</div>
+        <div class="member-answers" id="ma-q3"></div>
+        <textarea class="answer-area" id="q3" placeholder="Your answer…" oninput="saveAnswer('q3')" rows="3"></textarea>
+      </div>
+
+      <div class="question-card">
+        <div class="question-num">Question 4</div>
+        <div class="question-text">Sexual temptation engages the eyes, mind, and heart. Which is your weakest area right now?</div>
+        <div class="area-buttons">
+          <button class="area-btn" onclick="selectArea(this,'eyes')">👁️ Eyes<br><small>what I look at</small></button>
+          <button class="area-btn" onclick="selectArea(this,'mind')">🧠 Mind<br><small>what I imagine or dwell on</small></button>
+          <button class="area-btn" onclick="selectArea(this,'heart')">❤️ Heart<br><small>what I desire</small></button>
+        </div>
+        <div class="member-answers" id="ma-q4" style="margin-top:10px;"></div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-num">Question 5</div>
+        <div class="question-text">Why is exposing sin important? What are the implications of unexposed sin?</div>
+        <div class="member-answers" id="ma-q5"></div>
+        <textarea class="answer-area" id="q5" placeholder="Your answer…" oninput="saveAnswer('q5')" rows="3"></textarea>
+      </div>
+
+      <div class="question-card">
+        <div class="question-num">Question 6</div>
+        <div class="question-text">What are you currently engaging in that is fueling temptation (apps, shows, social media, habits, etc.)? How do you need to handle these so that you are cutting off the temptation vs. managing it?</div>
+        <div class="member-answers" id="ma-q6"></div>
+        <textarea class="answer-area" id="q6" placeholder="Your answer…" oninput="saveAnswer('q6')" rows="3"></textarea>
+      </div>
+
+      <div class="question-card">
+        <div class="question-num">Question 7</div>
+        <div class="question-text">Why is healing from sexual sin important? How does one take steps toward healing from sexual sin?</div>
+        <div class="member-answers" id="ma-q7"></div>
+        <textarea class="answer-area" id="q7" placeholder="Your answer…" oninput="saveAnswer('q7')" rows="3"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 7: SCRIPTURE MEMORY -->
+  <div class="section" data-section="6">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <div class="section-title">Scripture Memory & Declaration</div>
+    </div>
+    <div class="section-body">
+      <p class="intro-text" style="margin-bottom:18px;">As we declare and believe God's word, it becomes a sharp edge that is used to shape our desires and as a weapon that fights against the enemy. Commit this scripture and declaration to memory this week.</p>
+
+      <div class="memory-verse">
+        <div class="ref">Hebrews 4:16 (NLT)</div>
+        <div class="verse-text">So let us come boldly to the throne of our gracious God. There we will receive his mercy, and we will find grace to help us when we need it most.</div>
+      </div>
+
+      <div class="declaration">
+        <div class="declaration-line"><strong>I will overcome sexual temptation.</strong></div>
+        <div class="declaration-line">I will seek to eradicate it from my life through continual <strong>exposure, smothering, guarding against,</strong> and <strong>healing.</strong></div>
+        <div class="declaration-line">By God's grace <strong>sexual immorality will have no place in my life.</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 8: COMMIT -->
+  <div class="section" data-section="7">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <div class="section-title">My Commitment This Week</div>
+    </div>
+    <div class="section-body">
+      <p class="intro-text" style="margin-bottom:16px;">Based on today's lesson, write one specific action you will take this week to overcome sexual temptation.</p>
+      <textarea class="answer-area" id="commitment" placeholder="This week I will…" oninput="saveAnswer('commitment')" rows="4"></textarea>
+
+      <button class="complete-btn" onclick="completeLesson()">✓ Mark Lesson Complete</button>
+    </div>
+  </div>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── STATE ──
+const MEMBERS = [
+  { name: 'Michael', color: '#c9a84c' },
+  { name: 'Member 2', color: '#2980b9' },
+  { name: 'Member 3', color: '#27ae60' },
+  { name: 'Member 4', color: '#c0392b' },
+];
+let activeM = 0;
+const store = {}; // store[memberId][key] = value
+
+MEMBERS.forEach((_, i) => store[i] = {});
+
+function setActive(id) {
+  activeM = id;
+  document.querySelectorAll('.member-chip').forEach((c, i) => {
+    c.classList.toggle('active', i === id);
+  });
+  loadAnswers();
+}
+
+// ── BLANKS ──
+const blankAnswers = {};
+function revealBlank(id, answer) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.remove('empty');
+  el.classList.add('revealed');
+  el.textContent = answer;
+  blankAnswers[id] = true;
+  updateProgress();
+}
+
+// ── ANSWERS ──
+function saveAnswer(key) {
+  const el = document.getElementById(key);
+  if (!el) return;
+  store[activeM][key] = el.value;
+  updateMemberAnswerTags(key);
+  updateProgress();
+}
+
+function loadAnswers() {
+  const data = store[activeM];
+  ['q1','q2','q3','q5','q6','q7','commitment'].forEach(k => {
+    const el = document.getElementById(k);
+    if (el) el.value = data[k] || '';
+  });
+  updateAllTags();
+}
+
+function updateMemberAnswerTags(key) {
+  const container = document.getElementById('ma-' + key);
+  if (!container) return;
+  container.innerHTML = '';
+  MEMBERS.forEach((m, i) => {
+    const val = store[i][key];
+    if (val && val.trim()) {
+      const tag = document.createElement('div');
+      tag.className = 'answer-tag';
+      tag.innerHTML = `<div class="dot" style="background:${m.color}"></div><span>${m.name}</span>`;
+      container.appendChild(tag);
+    }
+  });
+}
+
+function updateAllTags() {
+  ['q1','q2','q3','q4','q5','q6','q7'].forEach(k => updateMemberAnswerTags(k));
+}
+
+// ── AREA SELECT ──
+function selectArea(btn, area) {
+  btn.closest('.question-card').querySelectorAll('.area-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  store[activeM]['q4'] = area;
+  updateMemberAnswerTags('q4');
+  updateProgress();
+}
+
+// ── PROGRESS ──
+function updateProgress() {
+  const totalSections = 8;
+  let completed = 0;
+  // Check each section's content
+  // s0: blank b0
+  if (blankAnswers['b0']) completed++;
+  // s1: blanks b1-b3
+  if (blankAnswers['b1'] && blankAnswers['b2'] && blankAnswers['b3']) completed++;
+  // s2: blanks b4-b8
+  if (blankAnswers['b4'] && blankAnswers['b5']) completed++;
+  // s3: section shown
+  if (blankAnswers['b7'] && blankAnswers['b8']) completed++;
+  // s4: strategy blanks
+  if (blankAnswers['bs1'] && blankAnswers['bs2'] && blankAnswers['bs3'] && blankAnswers['bs4']) completed++;
+  // s5: at least 3 questions answered
+  const answered = ['q1','q2','q3','q4','q5','q6','q7'].filter(k => (store[activeM][k] || '').trim().length > 0).length;
+  if (answered >= 3) completed++;
+  // s6: declaration section — always credit once revealed
+  if (blankAnswers['b6']) completed++;
+  // s7: commitment
+  if ((store[activeM]['commitment'] || '').trim().length > 10) completed++;
+
+  const pct = Math.round((completed / totalSections) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = completed + ' of ' + totalSections + ' sections';
+}
+
+// ── COMPLETE ──
+function completeLesson() {
+  showToast('🙌 Lesson Three Complete! Walk in victory this week.');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ── INIT ──
+loadAnswers();
+</script>
+</body>
+</html>

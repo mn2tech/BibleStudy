@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>Pure Man – Lesson One</title>
+<title>Pure Man – Men's Bible Study</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -24,8 +24,8 @@
 
   body {
     font-family: 'Crimson Pro', Georgia, serif;
-    background: var(--cream);
-    color: var(--text);
+    background: var(--navy);
+    color: #e2e8f0;
     min-height: 100vh;
   }
 
@@ -79,894 +79,114 @@
     display: none;
   }
   .welcome-name.visible { display: inline; }
-  .lesson-nav {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 10px;
-    flex-wrap: wrap;
-  }
-  .lesson-nav a {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.72rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: #94a3b8;
-    padding: 4px 10px;
-    border-radius: 4px;
-    border: 1px solid rgba(201,168,76,0.2);
-    transition: color 0.2s, border-color 0.2s;
-  }
-  .lesson-nav a:hover { color: var(--gold-light); border-color: var(--gold); }
-  .lesson-nav a.active {
-    color: var(--gold-light);
-    border-color: var(--gold);
-    background: rgba(201,168,76,0.12);
-  }
 
-  /* Name entry overlay */
-  #name-overlay {
-    position: fixed; inset: 0;
-    background: rgba(13,27,42,0.92);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 200;
-    backdrop-filter: blur(4px);
-  }
-  .name-card {
-    background: white;
-    border-radius: 16px;
-    padding: 40px 36px;
-    max-width: 380px;
-    width: 90%;
-    text-align: center;
-    border-top: 4px solid var(--gold);
-    box-shadow: 0 24px 60px rgba(0,0,0,0.4);
-  }
-  .name-card .logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--navy);
-    letter-spacing: 3px;
-  }
-  .name-card .logo span { color: var(--gold); }
-  .name-card h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
-    color: var(--navy);
-    margin: 16px 0 8px;
-  }
-  .name-card p {
-    font-size: 1rem;
-    color: var(--muted);
-    margin-bottom: 20px;
-    line-height: 1.5;
-  }
-  .name-input {
-    width: 100%;
-    padding: 12px 16px;
-    font-family: 'Crimson Pro', serif;
-    font-size: 1.1rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 8px;
-    outline: none;
-    transition: border-color 0.2s;
-    margin-bottom: 12px;
-  }
-  .name-input:focus { border-color: var(--gold); }
-  .btn-join {
-    width: 100%;
-    padding: 13px;
-    background: var(--navy);
-    color: var(--gold-light);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 500;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-  }
-  .btn-join:hover { background: var(--fill); }
-  .btn-join:active { transform: scale(0.98); }
-
-  /* Progress bar */
-  .progress-wrap {
-    background: #e2e8f0;
-    height: 4px;
-  }
-  .progress-bar {
-    height: 4px;
-    background: linear-gradient(90deg, var(--gold), var(--gold-light));
-    transition: width 0.5s ease;
-  }
-
-  /* Main content */
+  /* Home page */
   main {
-    max-width: 740px;
+    max-width: 860px;
     margin: 0 auto;
-    padding: 32px 20px 80px;
+    padding: 48px 20px 80px;
   }
 
-  .lesson-title {
-    text-align: center;
-    margin-bottom: 36px;
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
   }
-  .lesson-title .eyebrow {
+
+  .card {
+    background: var(--navy2);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-top: 3px solid var(--gold);
+    border-radius: 12px;
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .card:hover {
+    border-color: rgba(201,168,76,0.5);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+
+  .card-label {
     font-family: 'DM Sans', sans-serif;
     font-size: 0.72rem;
     letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 6px;
-  }
-  .lesson-title h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    color: var(--navy);
-    line-height: 1.2;
-  }
-
-  /* Section */
-  .section {
-    margin-bottom: 36px;
-    opacity: 0;
-    transform: translateY(18px);
-    animation: fadeUp 0.5s ease forwards;
-  }
-  @keyframes fadeUp {
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .section:nth-child(1) { animation-delay: 0.05s; }
-  .section:nth-child(2) { animation-delay: 0.15s; }
-  .section:nth-child(3) { animation-delay: 0.25s; }
-  .section:nth-child(4) { animation-delay: 0.35s; }
-  .section:nth-child(5) { animation-delay: 0.45s; }
-  .section:nth-child(6) { animation-delay: 0.55s; }
-  .section:nth-child(7) { animation-delay: 0.65s; }
-
-  .section-label {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.68rem;
-    letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--gold);
     margin-bottom: 10px;
-    padding-bottom: 6px;
-    border-bottom: 1px solid rgba(201,168,76,0.25);
   }
 
-  p.body-text {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    color: #2d3748;
-    margin-bottom: 12px;
-  }
-  p.body-text em { font-style: italic; color: var(--navy); }
-
-  /* Fill in the blank inline */
-  .fitb-line {
-    font-size: 1.15rem;
-    line-height: 2.2;
-    color: #2d3748;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 4px;
-  }
-  .fitb-line .bullet {
-    color: var(--gold);
-    margin-right: 4px;
-    font-size: 1.2rem;
-  }
-
-  /* The blank input */
-  .blank {
-    display: inline-block;
-    min-width: 180px;
-    border: none;
-    border-bottom: 2px solid var(--navy);
-    padding: 2px 6px;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--fill);
-    background: transparent;
-    outline: none;
-    letter-spacing: 0.5px;
-    transition: border-color 0.2s, background 0.2s;
-    text-align: center;
-  }
-  .blank::placeholder { color: #cbd5e1; font-weight: 400; letter-spacing: 0; text-transform: none; font-size: 0.85rem; font-family: 'DM Sans', sans-serif; }
-  .blank:focus {
-    border-color: var(--gold);
-    background: rgba(201,168,76,0.06);
-  }
-  .blank.filled {
-    border-color: var(--gold);
-    color: var(--navy);
-    background: rgba(201,168,76,0.2);
-    animation: popIn 0.3s ease;
-  }
-  @keyframes popIn {
-    0%{transform:scale(1)} 50%{transform:scale(1.04)} 100%{transform:scale(1)}
-  }
-
-  /* Highlight sentence */
-  .highlight-sentence {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.35rem;
-    font-style: italic;
-    color: var(--navy);
-    border-left: 4px solid var(--gold);
-    padding: 8px 0 8px 16px;
-    margin: 14px 0;
-    line-height: 1.5;
-  }
-
-  /* Scripture block */
-  .scripture {
-    background: var(--navy);
-    color: #e2e8f0;
-    border-radius: 10px;
-    padding: 18px 20px;
-    margin: 14px 0;
-    position: relative;
-    overflow: hidden;
-  }
-  .scripture::before {
-    content: '"';
-    position: absolute;
-    top: -10px; left: 10px;
-    font-size: 6rem;
-    color: rgba(201,168,76,0.12);
-    font-family: 'Playfair Display', serif;
-    line-height: 1;
-  }
-  .scripture .ref {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.72rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 6px;
-  }
-  .scripture p {
-    font-size: 1rem;
-    line-height: 1.7;
-    color: #e2e8f0;
-    font-style: italic;
-  }
-
-  /* Big fill statement */
-  .big-fill {
+  .card-title {
     font-family: 'Playfair Display', serif;
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--navy);
-    margin: 20px 0 14px;
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 8px;
-    line-height: 1.6;
-  }
-  .big-fill .blank {
-    font-size: 1.4rem;
-    min-width: 200px;
-  }
-
-  /* Bullet list */
-  .bullet-list {
-    list-style: none;
-    margin: 10px 0 10px 0;
-  }
-  .bullet-list li {
-    font-size: 1.05rem;
-    color: #374151;
-    padding: 3px 0 3px 18px;
-    position: relative;
-    line-height: 1.7;
-  }
-  .bullet-list li::before {
-    content: '›';
-    position: absolute; left: 0;
-    color: var(--gold);
-    font-size: 1.2rem;
-    top: 1px;
-  }
-
-  /* Reflection section */
-  .reflection-card {
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-top: 3px solid var(--gold);
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 14px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  }
-  .reflection-card .q-num {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.68rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 4px;
-  }
-  .reflection-card .q-text {
-    font-size: 1.05rem;
-    color: var(--navy);
-    line-height: 1.6;
-    margin-bottom: 10px;
-    font-weight: 600;
-  }
-  .reflection-textarea {
-    width: 100%;
-    padding: 10px 12px;
-    font-family: 'Crimson Pro', serif;
-    font-size: 1rem;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 6px;
-    resize: none;
-    outline: none;
-    color: var(--text);
-    transition: border-color 0.2s;
-    min-height: 70px;
-  }
-  .reflection-textarea:focus { border-color: var(--gold); }
-  .reflection-textarea::placeholder { color: #94a3b8; font-style: italic; }
-
-  /* Declaration box */
-  .declaration-box {
-    background: var(--navy);
-    border-radius: 12px;
-    padding: 28px 24px;
-    text-align: center;
-    border: 1px solid rgba(201,168,76,0.3);
-  }
-  .declaration-box .dec-label {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 14px;
-  }
-  .declaration-box .memory-verse {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.25rem;
-    font-style: italic;
     color: white;
-    line-height: 1.6;
-    margin-bottom: 6px;
+    line-height: 1.3;
+    margin-bottom: 8px;
   }
-  .declaration-box .verse-ref {
+
+  .card-subtitle {
     font-family: 'DM Sans', sans-serif;
     font-size: 0.78rem;
     color: var(--gold-light);
     letter-spacing: 1px;
-    margin-bottom: 20px;
-  }
-  .declaration-lines {
-    text-align: left;
-    border-top: 1px solid rgba(201,168,76,0.2);
-    padding-top: 16px;
-  }
-  .declaration-lines p {
-    font-family: 'Crimson Pro', serif;
-    font-style: italic;
-    color: #cbd5e1;
-    font-size: 1.05rem;
-    line-height: 1.8;
-  }
-  .declaration-lines p strong {
-    color: var(--gold-light);
-    font-style: normal;
-    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    flex-grow: 1;
   }
 
-  /* Progress indicator */
-  .progress-indicator {
-    position: fixed;
-    bottom: 20px; right: 20px;
-    background: var(--navy);
+  .card-btn {
+    display: inline-block;
+    padding: 12px 20px;
+    background: var(--fill);
     color: var(--gold-light);
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.8rem;
-    padding: 8px 14px;
-    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 8px;
     border: 1px solid rgba(201,168,76,0.3);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    z-index: 50;
+    transition: background 0.2s, transform 0.1s;
+    align-self: flex-start;
   }
+  .card-btn:hover { background: var(--navy); }
+  .card-btn:active { transform: scale(0.98); }
 
-  @media (max-width: 480px) {
-    .big-fill { font-size: 1.2rem; }
-    .lesson-title h1 { font-size: 1.5rem; }
-    .blank { min-width: 130px; }
+  @media (max-width: 640px) {
+    .cards {
+      grid-template-columns: 1fr;
+    }
+    .card-title { font-size: 1.3rem; }
   }
 </style>
 </head>
 <body>
 
-<!-- Name entry overlay -->
-<div id="name-overlay">
-  <div class="name-card">
-    <div class="logo">PURE<span>MAN</span></div>
-    <h2>Welcome, Brother</h2>
-    <p>Enter your name to join the study session and follow along with the lesson.</p>
-    <input class="name-input" id="name-input" type="text" placeholder="Your first name..." maxlength="20" autofocus>
-    <button class="btn-join" id="btn-join" type="button">Join Session</button>
-  </div>
-</div>
-
-<!-- Header -->
 <header>
   <div class="brand">PURE<span>MAN</span></div>
-  <div class="subtitle">Men's Bible Study · Lesson One</div>
-  <div class="session-bar">
-    <span class="session-code">SESSION: PUREMAN-L1</span>
-    <span id="welcome-name" class="welcome-name"></span>
-  </div>
-  <nav class="lesson-nav">
-    <a href="index.html" class="active">Lesson One</a>
-    <a href="pureman-lesson2.html">Lesson Two</a>
-  </nav>
+  <div class="subtitle">Men's Bible Study</div>
 </header>
 
-<!-- Progress bar -->
-<div class="progress-wrap">
-  <div class="progress-bar" id="progress-bar" style="width:0%"></div>
-</div>
-
-<!-- Main lesson content -->
 <main>
-  <div class="lesson-title">
-    <div class="eyebrow">Lesson One</div>
-    <h1>Embracing the "P" Word</h1>
+  <div class="cards">
+    <article class="card">
+      <div class="card-label">Lesson 1</div>
+      <h2 class="card-title">Embracing the "P" Word</h2>
+      <p class="card-subtitle">Man in the Arena · Part 1</p>
+      <a class="card-btn" href="pureman-lesson1.html">Open Lesson →</a>
+    </article>
+
+    <article class="card">
+      <div class="card-label">Lesson 3</div>
+      <h2 class="card-title">Not Even a Hint</h2>
+      <p class="card-subtitle">Man in the Arena · Part 2</p>
+      <a class="card-btn" href="lesson-three.html">Open Lesson →</a>
+    </article>
   </div>
-
-  <!-- Section 1: Intro -->
-  <div class="section">
-    <div class="section-label">Introduction</div>
-    <p class="body-text">There is a "P" word floating around out there, that no one wants to talk about. It's not <em>pornography</em>, it's <em>purity</em>.</p>
-    <p class="body-text">The word <em>pure</em> gets a bad rap, especially in masculine circles. Men tend to look at this word and assign weakness to it — something frail, callow, naïve, soft, sheltered, or untested.</p>
-    <p class="body-text">In reality, <em>pure</em> by definition speaks to strength, resiliency, wholeness, and something that is clearly and unmistakably defined, or refined. It speaks to something measured to a clear standard — something that has a clear meaning and purpose.</p>
-    <div class="highlight-sentence">Something that is pure is undivided, uncontaminated, and is unmistakable.</div>
-  </div>
-
-  <!-- Section 2: Marks of a Pure Man -->
-  <div class="section">
-    <div class="section-label">The Marks of a Pure Man</div>
-    <p class="body-text"><strong>These are the marks of a Pure Man:</strong></p>
-
-    <div class="fitb-line">
-      <span class="bullet">›</span>
-      A pure man is
-      <input class="blank" data-answer="undivided" placeholder="fill in...">
-      .
-    </div>
-    <div class="fitb-line">
-      <span class="bullet">›</span>
-      A pure man is
-      <input class="blank" data-answer="uncontaminated" placeholder="fill in...">
-      .
-    </div>
-    <div class="fitb-line">
-      <span class="bullet">›</span>
-      A pure man is
-      <input class="blank" data-answer="unmistakable" placeholder="fill in...">
-      .
-    </div>
-  </div>
-
-  <!-- Section 3: Purity Problem -->
-  <div class="section">
-    <div class="section-label">The Problem</div>
-    <div class="big-fill">
-      We have a
-      <input class="blank" data-answer="purity" placeholder="fill in...">
-      <input class="blank" data-answer="problem" placeholder="fill in...">
-      .
-    </div>
-
-    <p class="body-text">There are signs that exist that tell us we have a purity problem in our culture today, especially as it relates to men. More than any other time in history there are indications that men are struggling with a clear and defined sense of purpose, wholeness, standard, strength, and resolve.</p>
-
-    <ul class="bullet-list">
-      <li>Growing number of fatherless homes</li>
-      <li>Becoming more common for men to be unhappy or struggling in their marriages</li>
-      <li>Fractured families (divorce, split custody)</li>
-      <li>Proliferation of lust, affairs, pornography</li>
-      <li>Instability and low self-worth (suicide and depression)</li>
-      <li>Lack of direction and purpose</li>
-      <li>Degradation of standards and character (cheating, shortcuts, gambling)</li>
-      <li>Overly materialistic & self-centered ambitions</li>
-      <li>Increase in substance abuse / reliance</li>
-      <li>Growing sense of entitlement and a weakening of work-ethic</li>
-    </ul>
-  </div>
-
-  <!-- Section 4: Impurity Plagues -->
-  <div class="section">
-    <div class="section-label">Impurity's Reach</div>
-    <div class="big-fill">
-      <input class="blank" data-answer="impurity" placeholder="fill in...">
-      <input class="blank" data-answer="plagues" placeholder="fill in...">
-      all of us.
-    </div>
-
-    <p class="body-text">Impurities that attack any one of us are common to all of us (1 Corinthians 10:13). They try to find their way into any and every part of our lives seeking to dilute and pollute our hearts and minds.</p>
-    <p class="body-text">Dilution occurs when there is a mixture of something pure with something lesser. When this occurs, strength, potency, and clarity weaken.</p>
-
-    <div class="scripture">
-      <div class="ref">Genesis 3:1–4 (NIV)</div>
-      <p>Now the serpent was more crafty than any of the wild animals the Lord God had made. He said to the woman, "Did God really say, 'You must not eat from any tree in the garden'?" The woman said to the serpent, "We may eat fruit from the trees in the garden, but God did say, 'You must not eat fruit from the tree that is in the middle of the garden, and you must not touch it, or you will die.'" "You will not certainly die," the serpent said to the woman.</p>
-    </div>
-
-    <p class="body-text">Pollutants corrupt and contaminate. They introduce foreign or harmful elements into an otherwise stable or pure environment.</p>
-
-    <div class="scripture">
-      <div class="ref">1 Corinthians 5:6 (NLT)</div>
-      <p>Your boasting about this is terrible. Don't you realize that this sin is like a little yeast that spreads through the whole batch of dough?</p>
-    </div>
-
-    <div class="scripture">
-      <div class="ref">James 1:27 (CEB)</div>
-      <p>True devotion, the kind that is pure and faultless before God the Father, is this: to care for orphans and widows in their difficulties and to keep the world from contaminating us.</p>
-    </div>
-  </div>
-
-  <!-- Section 5: Path of Least Resistance -->
-  <div class="section">
-    <div class="section-label">How Sin Enters</div>
-    <div class="fitb-line" style="font-size:1.2rem; font-family:'Playfair Display',serif; font-weight:700; color:var(--navy);">
-      Impurities look for the
-      <input class="blank" data-answer="path of least resistance" placeholder="fill in..." style="min-width:240px;">
-      .
-    </div>
-
-    <p class="body-text">Sin sneaks into our lives slowly and subtly. It follows the path of least resistance until it finds easy access points and can develop a stronghold in our lives.</p>
-
-    <div class="scripture">
-      <div class="ref">James 1:14–15 (NLT)</div>
-      <p>Temptation comes from our own desires, which entice us and drag us away. These desires give birth to sinful actions. And when sin is allowed to grow, it gives birth to death.</p>
-    </div>
-    <div class="scripture">
-      <div class="ref">Proverbs 14:12 (NLT)</div>
-      <p>There is a path before each person that seems right, but it ends in death.</p>
-    </div>
-    <div class="scripture">
-      <div class="ref">Hebrews 3:13 (AMP)</div>
-      <p>But continually encourage one another every day, as long as it is called "Today" [and there is an opportunity], so that none of you will be hardened [into settled rebellion] by the deceitfulness of sin [its cleverness, delusive glamour, and sophistication].</p>
-    </div>
-  </div>
-
-  <!-- Section 6: At the Source -->
-  <div class="section">
-    <div class="section-label">The Solution</div>
-    <div class="fitb-line" style="font-size:1.2rem; font-family:'Playfair Display',serif; font-weight:700; color:var(--navy);">
-      Purity problems are best resolved
-      <input class="blank" data-answer="at the source" placeholder="fill in..." style="min-width:200px;">
-      .
-    </div>
-
-    <p class="body-text">You can seek to solve a problem, but not resolve the issue. You'll never fully solve a problem unless you get to the source of the problem.</p>
-
-    <div class="scripture">
-      <div class="ref">James 3:11–12 (NIV)</div>
-      <p>Can both fresh water and salt water flow from the same spring? My brothers and sisters, can a fig tree bear olives, or a grapevine bear figs? Neither can a salt spring produce fresh water.</p>
-    </div>
-
-    <p class="body-text">David, the man described as one who had a heart patterned after God's (1 Samuel 13:14, Acts 13:22) found himself lured into an affair with another man's wife (2 Samuel 11).</p>
-    <p class="body-text">After being confronted by the prophet Nathan, David repented to the Lord, asking the Lord to deal permanently with the sins of his own desires. David had to go to the source of his sin.</p>
-
-    <p class="body-text" style="margin-top:16px; font-weight:600;">To resolve purity at the source:</p>
-
-    <div class="fitb-line" style="margin:10px 0;">
-      <span class="bullet">›</span>
-      Get into a
-      <input class="blank" data-answer="posture" placeholder="fill in...">
-      of
-      <input class="blank" data-answer="humility" placeholder="fill in...">
-      .
-    </div>
-
-    <div class="scripture">
-      <div class="ref">Jeremiah 6:16 (NLT)</div>
-      <p>This is what the Lord says: "Stop at the crossroads and look around. Ask for the old, godly way, and walk in it. Travel its path, and you will find rest for your souls. But you reply, 'No, that's not the road we want!'"</p>
-    </div>
-    <div class="scripture">
-      <div class="ref">James 4:6 (TLB)</div>
-      <p>But he gives us more and more strength to stand against all such evil longings. As the Scripture says, God gives strength to the humble but sets himself against the proud and haughty.</p>
-    </div>
-    <div class="scripture">
-      <div class="ref">Psalm 51:16–17 (NIV)</div>
-      <p>You do not delight in sacrifice, or I would bring it; you do not take pleasure in burnt offerings. My sacrifice, O God, is a broken spirit; a broken and contrite heart you, God, will not despise.</p>
-    </div>
-
-    <div class="fitb-line" style="margin:16px 0;">
-      <span class="bullet">›</span>
-      <input class="blank" data-answer="genuinely bring" placeholder="fill in..." style="min-width:200px;">
-      the issue to God.
-    </div>
-
-    <div class="scripture">
-      <div class="ref">Isaiah 5:20 (NLT)</div>
-      <p>What sorrow for those who say that evil is good and good is evil, that dark is light and light is dark, that bitter is sweet and sweet is bitter.</p>
-    </div>
-    <div class="scripture">
-      <div class="ref">Psalm 51:1–4 (NIV)</div>
-      <p>Have mercy on me, O God, according to your unfailing love; according to your great compassion blot out my transgressions. Wash away all my iniquity and cleanse me from my sin. For I know my transgressions, and my sin is always before me. Against you, you only, have I sinned and done what is evil in your sight; so you are right in your verdict and justified when you judge.</p>
-    </div>
-
-    <div class="fitb-line" style="margin:16px 0;">
-      <span class="bullet">›</span>
-      Ask for and receive God's
-      <input class="blank" data-answer="cleansing" placeholder="fill in...">
-      and
-      <input class="blank" data-answer="restoration" placeholder="fill in...">
-      .
-    </div>
-
-    <div class="scripture">
-      <div class="ref">Psalm 51:7–9 (NIV)</div>
-      <p>Cleanse me with hyssop, and I will be clean; wash me, and I will be whiter than snow. Let me hear joy and gladness; let the bones you have crushed rejoice. Hide your face from my sins and blot out all my iniquity. Create in me a pure heart, O God, and renew a steadfast spirit within me. Do not cast me from your presence or take your Holy Spirit from me. Restore to me the joy of your salvation and grant me a willing spirit to sustain me.</p>
-    </div>
-  </div>
-
-  <!-- Section 7: Reflection Questions -->
-  <div class="section">
-    <div class="section-label">Reflection Questions</div>
-
-    <div class="reflection-card">
-      <div class="q-num">Question 1</div>
-      <div class="q-text">When you hear the word "pure," what have you traditionally associated it with — and why?</div>
-      <textarea class="reflection-textarea" placeholder="Share your thoughts..."></textarea>
-    </div>
-
-    <div class="reflection-card">
-      <div class="q-num">Question 2</div>
-      <div class="q-text">Define these in your own words. Which is the easiest and most difficult to live out?</div>
-      <p style="font-size:0.9rem; color:var(--muted); margin-bottom:8px; font-family:'DM Sans',sans-serif;">Living undivided · Living uncontaminated · Living unmistakable</p>
-      <textarea class="reflection-textarea" placeholder="Your definitions and thoughts..."></textarea>
-    </div>
-
-    <div class="reflection-card">
-      <div class="q-num">Question 3</div>
-      <div class="q-text">Identify the symptoms of a diluted and polluted life in your own experience.</div>
-      <textarea class="reflection-textarea" placeholder="Dilution symptoms... Pollution symptoms..."></textarea>
-    </div>
-
-    <div class="reflection-card">
-      <div class="q-num">Question 4</div>
-      <div class="q-text">Are you more prone to <em>dilution</em> (compromise, lowering standards) or <em>pollution</em> (allowing harmful influences in)?</div>
-      <textarea class="reflection-textarea" placeholder="Be honest — this is a safe space..."></textarea>
-    </div>
-
-    <div class="reflection-card">
-      <div class="q-num">Question 5</div>
-      <div class="q-text">What can you identify that is currently or has the potential to dilute or pollute your life?</div>
-      <textarea class="reflection-textarea" placeholder="Be specific..."></textarea>
-    </div>
-
-    <div class="reflection-card">
-      <div class="q-num">Question 6</div>
-      <div class="q-text">Read Psalm 51:10. What specifically needs to be made "clean/pure" or "steadfast/right" in you?</div>
-      <textarea class="reflection-textarea" placeholder="Your personal application..."></textarea>
-    </div>
-  </div>
-
-  <!-- Section 8: Scripture Memory & Declaration -->
-  <div class="section">
-    <div class="section-label">Scripture Memory & Declaration</div>
-    <div class="declaration-box">
-      <div class="dec-label">Commit this to memory this week</div>
-      <div class="memory-verse">"Create in me a pure heart, O God, and renew a steadfast spirit within me."</div>
-      <div class="verse-ref">Psalm 51:10 (NIV)</div>
-      <div class="declaration-lines">
-        <p>I am a pure man.</p>
-        <p><strong>I am undivided, uncontaminated, and unmistakably devoted to Jesus.</strong></p>
-        <p>I purpose to keep a pure heart and a steadfast spirit.</p>
-      </div>
-    </div>
-  </div>
-
 </main>
 
-<!-- Progress indicator -->
-<div class="progress-indicator" id="progress-indicator">0 / 14 blanks filled</div>
-
-<script>
-(function () {
-  const STORAGE_KEY = 'pureman-l1';
-  const NAME_KEY = 'pureman-name';
-  let saveTimer;
-
-  function loadSave() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : {};
-    } catch (_) {
-      return {};
-    }
-  }
-
-  function saveAll() {
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(() => {
-      const data = { version: 1, blanks: {}, reflections: {}, updatedAt: new Date().toISOString() };
-      const nameInput = document.getElementById('name-input');
-      const welcome = document.getElementById('welcome-name');
-      let name = nameInput ? nameInput.value.trim() : '';
-      if (!name && welcome && welcome.classList.contains('visible')) {
-        name = welcome.textContent.replace(/^Welcome,\s*/, '').trim();
-      }
-      if (name) {
-        data.name = name;
-        try { localStorage.setItem(NAME_KEY, name); } catch (_) {}
-      }
-
-      document.querySelectorAll('input.blank').forEach((b) => {
-        const key = b.getAttribute('data-answer');
-        if (key && b.value.trim()) data.blanks[key] = b.value;
-      });
-      document.querySelectorAll('textarea.reflection-textarea').forEach((t, i) => {
-        if (t.value.trim()) data.reflections['q' + (i + 1)] = t.value;
-      });
-
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-      } catch (_) { /* private browsing / quota */ }
-    }, 300);
-  }
-
-  function enterSession(name) {
-    document.getElementById('name-overlay').style.display = 'none';
-    const welcome = document.getElementById('welcome-name');
-    welcome.textContent = 'Welcome, ' + name;
-    welcome.classList.add('visible');
-    saveAll();
-  }
-
-  function joinSession() {
-    const val = document.getElementById('name-input').value.trim();
-    if (!val) {
-      document.getElementById('name-input').focus();
-      return;
-    }
-    enterSession(val);
-  }
-
-  document.getElementById('btn-join').addEventListener('click', joinSession);
-  document.getElementById('name-input').addEventListener('keydown', e => {
-    if (e.key === 'Enter') joinSession();
-  });
-
-  function norm(s) {
-    return String(s || '').trim().toLowerCase().replace(/\s+/g, ' ');
-  }
-
-  function autofillBlank(input) {
-    const answer = input.getAttribute('data-answer');
-    if (!answer) return;
-
-    const typed = norm(input.value);
-    const target = norm(answer);
-
-    if (!typed) {
-      input.classList.remove('filled');
-      input.placeholder = 'fill in...';
-      return;
-    }
-
-    if (target.startsWith(typed)) {
-      input.value = answer;
-      input.classList.add('filled');
-      input.placeholder = '';
-    } else {
-      input.classList.remove('filled');
-    }
-  }
-
-  function syncBlankStyle(input) {
-    const answer = input.getAttribute('data-answer');
-    if (!answer) return;
-    if (norm(input.value) === norm(answer)) {
-      input.classList.add('filled');
-      input.placeholder = '';
-    } else if (!input.value.trim()) {
-      input.classList.remove('filled');
-      input.placeholder = 'fill in...';
-    } else {
-      input.classList.remove('filled');
-    }
-  }
-
-  function updateBlankProgress() {
-    const blanks = document.querySelectorAll('input.blank');
-    let filled = 0;
-    blanks.forEach((b) => {
-      const ans = b.getAttribute('data-answer');
-      if (ans && norm(b.value) === norm(ans)) filled++;
-    });
-    const bar = document.getElementById('progress-bar');
-    const label = document.getElementById('progress-indicator');
-    const pct = blanks.length ? Math.round((filled / blanks.length) * 100) : 0;
-    if (bar) bar.style.width = pct + '%';
-    if (label) label.textContent = filled + ' / ' + blanks.length + ' blanks filled';
-  }
-
-  function onBlankEvent(e) {
-    const input = e.target;
-    if (!(input instanceof HTMLInputElement) || !input.classList.contains('blank')) return;
-    autofillBlank(input);
-    updateBlankProgress();
-    saveAll();
-  }
-
-  document.querySelectorAll('input.blank').forEach((input) => {
-    input.setAttribute('autocomplete', 'off');
-    input.setAttribute('spellcheck', 'false');
-    input.addEventListener('focus', () => {
-      const answer = input.getAttribute('data-answer');
-      if (answer && !norm(input.value)) {
-        input.placeholder = 'Type "' + answer.charAt(0) + '" to autofill…';
-      }
-    });
-    input.addEventListener('blur', () => {
-      if (!norm(input.value)) input.placeholder = 'fill in...';
-    });
-  });
-
-  document.querySelectorAll('textarea.reflection-textarea').forEach((ta) => {
-    ta.addEventListener('input', () => saveAll());
-  });
-
-  document.addEventListener('input', onBlankEvent, true);
-  document.addEventListener('keyup', onBlankEvent, true);
-  document.addEventListener('keydown', (e) => {
-    if (e.key.length === 1) requestAnimationFrame(() => onBlankEvent(e));
-  }, true);
-  document.addEventListener('change', onBlankEvent, true);
-
-  function restoreProgress() {
-    const saved = loadSave();
-    let name = saved.name;
-    if (!name) {
-      try { name = localStorage.getItem(NAME_KEY) || ''; } catch (_) {}
-    }
-    if (name) {
-      document.getElementById('name-input').value = name;
-      document.getElementById('name-overlay').style.display = 'none';
-      const welcome = document.getElementById('welcome-name');
-      welcome.textContent = 'Welcome, ' + name;
-      welcome.classList.add('visible');
-    }
-    if (saved.blanks) {
-      document.querySelectorAll('input.blank').forEach((b) => {
-        const key = b.getAttribute('data-answer');
-        if (key && saved.blanks[key] != null) {
-          b.value = saved.blanks[key];
-          syncBlankStyle(b);
-        }
-      });
-    }
-    if (saved.reflections) {
-      document.querySelectorAll('textarea.reflection-textarea').forEach((t, i) => {
-        const val = saved.reflections['q' + (i + 1)];
-        if (val != null) t.value = val;
-      });
-    }
-    updateBlankProgress();
-  }
-
-  restoreProgress();
-})();
-</script>
 </body>
 </html>
