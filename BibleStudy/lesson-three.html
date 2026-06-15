@@ -178,40 +178,6 @@
     transition: width 0.5s ease;
   }
 
-  .members-bar {
-    background: white;
-    border-bottom: 1px solid #e2e8f0;
-    padding: 12px 20px;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .members-label {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.68rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-right: 4px;
-  }
-  .member-chip {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--cream);
-    border: 1px solid #e2e8f0;
-    border-radius: 20px;
-    padding: 4px 12px 4px 8px;
-    font-size: 0.78rem;
-    font-family: 'DM Sans', sans-serif;
-    cursor: pointer;
-    transition: border-color 0.2s;
-  }
-  .member-chip.active { border-color: var(--gold); color: var(--navy); font-weight: 500; }
-  .member-dot { width: 8px; height: 8px; border-radius: 50%; }
-
   main {
     max-width: 740px;
     margin: 0 auto;
@@ -477,21 +443,6 @@
   .reflection-textarea:focus { border-color: var(--gold); }
   .reflection-textarea::placeholder { color: #94a3b8; font-style: italic; }
 
-  .member-answers { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
-  .answer-tag {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--cream);
-    border: 1px solid #e2e8f0;
-    border-radius: 4px;
-    padding: 4px 8px;
-    font-size: 0.72rem;
-    font-family: 'DM Sans', sans-serif;
-    color: var(--muted);
-  }
-  .answer-tag .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-
   .area-buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
   .area-btn {
     background: white;
@@ -562,26 +513,6 @@
     font-weight: 600;
   }
 
-  .btn-complete {
-    display: block;
-    width: 100%;
-    margin-top: 20px;
-    padding: 14px;
-    background: var(--navy);
-    color: var(--gold-light);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-  }
-  .btn-complete:hover { background: var(--fill); }
-  .btn-complete:active { transform: scale(0.98); }
-
   .progress-indicator {
     position: fixed;
     bottom: 20px; right: 20px;
@@ -595,26 +526,6 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     z-index: 50;
   }
-
-  .toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--navy);
-    color: var(--gold-light);
-    padding: 12px 24px;
-    border-radius: 8px;
-    border: 1px solid rgba(201,168,76,0.3);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.85rem;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s;
-    z-index: 999;
-    white-space: nowrap;
-  }
-  .toast.show { opacity: 1; }
 
   @media (max-width: 520px) {
     .stats-grid { grid-template-columns: 1fr; }
@@ -653,22 +564,6 @@
 
 <div class="progress-wrap">
   <div class="progress-bar" id="progress-bar" style="width:0%"></div>
-</div>
-
-<div class="members-bar">
-  <span class="members-label">Group</span>
-  <div class="member-chip active" data-id="0" onclick="setActive(0)">
-    <div class="member-dot" style="background:#c9a84c"></div>Michael
-  </div>
-  <div class="member-chip" data-id="1" onclick="setActive(1)">
-    <div class="member-dot" style="background:#1e3a5f"></div>Member 2
-  </div>
-  <div class="member-chip" data-id="2" onclick="setActive(2)">
-    <div class="member-dot" style="background:#6b7280"></div>Member 3
-  </div>
-  <div class="member-chip" data-id="3" onclick="setActive(3)">
-    <div class="member-dot" style="background:var(--gold)"></div>Member 4
-  </div>
 </div>
 
 <main>
@@ -846,48 +741,41 @@
     <div class="reflection-card">
       <div class="q-num">Question 1</div>
       <div class="q-text">Why do you think sexual temptation is hitting men so hard right now? Where have you seen its impact — personally or around you?</div>
-      <div class="member-answers" id="ma-q1"></div>
-      <textarea class="reflection-textarea" id="q1" placeholder="Share your thoughts..." rows="3"></textarea>
+      <textarea class="reflection-textarea" data-reflection="q1" placeholder="Share your thoughts..."></textarea>
     </div>
     <div class="reflection-card">
       <div class="q-num">Question 2</div>
       <div class="q-text">Read the different versions of Ephesians 5:3. Put into your own words the Bible's standard regarding sexual immorality.</div>
-      <div class="member-answers" id="ma-q2"></div>
-      <textarea class="reflection-textarea" id="q2" placeholder="Share your thoughts..." rows="3"></textarea>
+      <textarea class="reflection-textarea" data-reflection="q2" placeholder="Share your thoughts..."></textarea>
     </div>
     <div class="reflection-card">
       <div class="q-num">Question 3</div>
       <div class="q-text">What does 1 John 3:8, Colossians 2:15, and 1 Corinthians 15:56–57 tell us about the degree of victory one can have over sin? What would be different in your life if you lived in this reality?</div>
-      <div class="member-answers" id="ma-q3"></div>
-      <textarea class="reflection-textarea" id="q3" placeholder="Share your thoughts..." rows="3"></textarea>
+      <textarea class="reflection-textarea" data-reflection="q3" placeholder="Share your thoughts..."></textarea>
     </div>
     <div class="reflection-card">
       <div class="q-num">Question 4</div>
       <div class="q-text">Sexual temptation engages the eyes, mind, and heart. Which is your weakest area right now?</div>
       <div class="area-buttons">
-        <button type="button" class="area-btn" data-area="eyes" onclick="selectArea(this,'eyes')">Eyes<small>what I look at</small></button>
-        <button type="button" class="area-btn" data-area="mind" onclick="selectArea(this,'mind')">Mind<small>what I imagine or dwell on</small></button>
-        <button type="button" class="area-btn" data-area="heart" onclick="selectArea(this,'heart')">Heart<small>what I desire</small></button>
+        <button type="button" class="area-btn" data-area="eyes">Eyes<small>what I look at</small></button>
+        <button type="button" class="area-btn" data-area="mind">Mind<small>what I imagine or dwell on</small></button>
+        <button type="button" class="area-btn" data-area="heart">Heart<small>what I desire</small></button>
       </div>
-      <div class="member-answers" id="ma-q4" style="margin-top:10px;"></div>
     </div>
     <div class="reflection-card">
       <div class="q-num">Question 5</div>
       <div class="q-text">Why is exposing sin important? What are the implications of unexposed sin?</div>
-      <div class="member-answers" id="ma-q5"></div>
-      <textarea class="reflection-textarea" id="q5" placeholder="Share your thoughts..." rows="3"></textarea>
+      <textarea class="reflection-textarea" data-reflection="q5" placeholder="Share your thoughts..."></textarea>
     </div>
     <div class="reflection-card">
       <div class="q-num">Question 6</div>
       <div class="q-text">What are you currently engaging in that is fueling temptation (apps, shows, social media, habits, etc.)? How do you need to handle these so that you are cutting off the temptation vs. managing it?</div>
-      <div class="member-answers" id="ma-q6"></div>
-      <textarea class="reflection-textarea" id="q6" placeholder="Share your thoughts..." rows="3"></textarea>
+      <textarea class="reflection-textarea" data-reflection="q6" placeholder="Share your thoughts..."></textarea>
     </div>
     <div class="reflection-card">
       <div class="q-num">Question 7</div>
       <div class="q-text">Why is healing from sexual sin important? How does one take steps toward healing from sexual sin?</div>
-      <div class="member-answers" id="ma-q7"></div>
-      <textarea class="reflection-textarea" id="q7" placeholder="Share your thoughts..." rows="3"></textarea>
+      <textarea class="reflection-textarea" data-reflection="q7" placeholder="Share your thoughts..."></textarea>
     </div>
   </div>
 
@@ -909,56 +797,18 @@
   <div class="section">
     <div class="section-label">My Commitment This Week</div>
     <p class="body-text">Based on today's lesson, write one specific action you will take this week to overcome sexual temptation.</p>
-    <textarea class="reflection-textarea" id="commitment" placeholder="This week I will…" rows="4"></textarea>
-    <button type="button" class="btn-complete" onclick="completeLesson()">Mark Lesson Complete</button>
+    <textarea class="reflection-textarea" data-reflection="commitment" placeholder="This week I will…"></textarea>
   </div>
 
 </main>
 
 <div class="progress-indicator" id="progress-indicator">0 / 13 blanks filled</div>
-<div class="toast" id="toast"></div>
 
 <script>
 (function () {
   const STORAGE_KEY = 'pureman-l3';
   const NAME_KEY = 'pureman-name';
   let saveTimer;
-
-  const MEMBERS = [
-    { name: 'Michael', color: '#c9a84c' },
-    { name: 'Member 2', color: '#1e3a5f' },
-    { name: 'Member 3', color: '#6b7280' },
-    { name: 'Member 4', color: '#c9a84c' },
-  ];
-  let activeM = 0;
-  const store = {};
-  MEMBERS.forEach((_, i) => { store[i] = {}; });
-
-  window.setActive = function (id) {
-    saveMemberData();
-    activeM = id;
-    document.querySelectorAll('.member-chip').forEach((c, i) => {
-      c.classList.toggle('active', i === id);
-    });
-    loadMemberData();
-    updateAllTags();
-    updateBlankProgress();
-  };
-
-  window.selectArea = function (btn, area) {
-    btn.closest('.reflection-card').querySelectorAll('.area-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    store[activeM]['q4'] = area;
-    updateMemberAnswerTags('q4');
-    saveAll();
-  };
-
-  window.completeLesson = function () {
-    const t = document.getElementById('toast');
-    t.textContent = 'Lesson Three complete! Walk in victory this week.';
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3500);
-  };
 
   function blankKey(el) {
     return el.getAttribute('data-blank-id') || el.getAttribute('data-answer');
@@ -977,31 +827,10 @@
     }
   }
 
-  function saveMemberData() {
-    ['q1','q2','q3','q5','q6','q7','commitment'].forEach(k => {
-      const el = document.getElementById(k);
-      if (el) store[activeM][k] = el.value;
-    });
-    const selected = document.querySelector('.area-btn.selected');
-    if (selected) store[activeM]['q4'] = store[activeM]['q4'] || '';
-  }
-
-  function loadMemberData() {
-    const data = store[activeM];
-    ['q1','q2','q3','q5','q6','q7','commitment'].forEach(k => {
-      const el = document.getElementById(k);
-      if (el) el.value = data[k] || '';
-    });
-    document.querySelectorAll('.area-btn').forEach(b => {
-      b.classList.toggle('selected', b.getAttribute('data-area') === data.q4);
-    });
-  }
-
   function saveAll() {
     clearTimeout(saveTimer);
     saveTimer = setTimeout(() => {
-      saveMemberData();
-      const data = { version: 1, blanks: {}, members: store, updatedAt: new Date().toISOString() };
+      const data = { version: 1, blanks: {}, reflections: {}, updatedAt: new Date().toISOString() };
       const nameInput = document.getElementById('name-input');
       const welcome = document.getElementById('welcome-name');
       let name = nameInput ? nameInput.value.trim() : '';
@@ -1012,10 +841,20 @@
         data.name = name;
         try { localStorage.setItem(NAME_KEY, name); } catch (_) {}
       }
+
       document.querySelectorAll('input.blank').forEach((b) => {
         const key = blankKey(b);
         if (key && b.value.trim()) data.blanks[key] = b.value;
       });
+
+      document.querySelectorAll('textarea.reflection-textarea[data-reflection]').forEach((t) => {
+        const key = t.getAttribute('data-reflection');
+        if (key && t.value.trim()) data.reflections[key] = t.value;
+      });
+
+      const selected = document.querySelector('.area-btn.selected');
+      if (selected) data.reflections.q4 = selected.getAttribute('data-area');
+
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (_) {}
     }, 300);
   }
@@ -1094,24 +933,13 @@
     saveAll();
   }
 
-  function updateMemberAnswerTags(key) {
-    const container = document.getElementById('ma-' + key);
-    if (!container) return;
-    container.innerHTML = '';
-    MEMBERS.forEach((m, i) => {
-      const val = store[i][key];
-      if (val && String(val).trim()) {
-        const tag = document.createElement('div');
-        tag.className = 'answer-tag';
-        tag.innerHTML = '<div class="dot" style="background:' + m.color + '"></div><span>' + m.name + '</span>';
-        container.appendChild(tag);
-      }
+  document.querySelectorAll('.area-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      btn.closest('.reflection-card').querySelectorAll('.area-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      saveAll();
     });
-  }
-
-  function updateAllTags() {
-    ['q1','q2','q3','q4','q5','q6','q7'].forEach(k => updateMemberAnswerTags(k));
-  }
+  });
 
   document.querySelectorAll('input.blank').forEach((input) => {
     input.setAttribute('autocomplete', 'off');
@@ -1128,11 +956,7 @@
   });
 
   document.querySelectorAll('textarea.reflection-textarea').forEach((ta) => {
-    ta.addEventListener('input', () => {
-      store[activeM][ta.id] = ta.value;
-      updateMemberAnswerTags(ta.id);
-      saveAll();
-    });
+    ta.addEventListener('input', () => saveAll());
   });
 
   document.addEventListener('input', onBlankEvent, true);
@@ -1164,13 +988,17 @@
         }
       });
     }
-    if (saved.members) {
-      Object.keys(saved.members).forEach(k => {
-        store[k] = saved.members[k];
+    if (saved.reflections) {
+      document.querySelectorAll('textarea.reflection-textarea[data-reflection]').forEach((t) => {
+        const key = t.getAttribute('data-reflection');
+        if (key && saved.reflections[key] != null) t.value = saved.reflections[key];
       });
+      if (saved.reflections.q4) {
+        document.querySelectorAll('.area-btn').forEach((b) => {
+          b.classList.toggle('selected', b.getAttribute('data-area') === saved.reflections.q4);
+        });
+      }
     }
-    loadMemberData();
-    updateAllTags();
     updateBlankProgress();
   }
 
