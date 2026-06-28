@@ -82,14 +82,14 @@
 
   /* Home page */
   main {
-    max-width: 1080px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 48px 20px 80px;
   }
 
   .cards {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 24px;
   }
 
@@ -155,7 +155,12 @@
   .card-btn:hover { background: var(--navy); }
   .card-btn:active { transform: scale(0.98); }
 
-  @media (max-width: 900px) {
+  @media (max-width: 1000px) {
+    .cards {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
     .cards {
       grid-template-columns: 1fr;
     }
@@ -191,6 +196,13 @@
       <h2 class="card-title">Not Even a Hint</h2>
       <p class="card-subtitle">Man in the Arena · Part 2</p>
       <a class="card-btn" href="lesson-three.html">Open Lesson →</a>
+    </article>
+
+    <article class="card">
+      <div class="card-label">Lesson 4</div>
+      <h2 class="card-title">A Better Way Forward</h2>
+      <p class="card-subtitle">Deal with the Past</p>
+      <a class="card-btn" href="pureman-lesson4.html">Open Lesson →</a>
     </article>
   </div>
 </main>

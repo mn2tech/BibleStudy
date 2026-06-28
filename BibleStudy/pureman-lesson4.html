@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Pure Man – Lesson Four</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0d1b2a;
+    --navy2: #162032;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --cream: #f5f0e8;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --fill: #1e3a5f;
+    --fill-text: #c9a84c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Crimson Pro', Georgia, serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+  header { background: var(--navy); padding: 20px 24px 16px; text-align: center; border-bottom: 3px solid var(--gold); position: sticky; top: 0; z-index: 100; }
+  header .brand { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: white; letter-spacing: 4px; text-transform: uppercase; }
+  header .brand span { color: var(--gold); }
+  header .subtitle { font-family: 'DM Sans', sans-serif; font-size: 0.75rem; color: var(--gold-light); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+  .session-bar { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 10px; flex-wrap: wrap; }
+  .session-code { font-family: 'DM Sans', sans-serif; font-size: 0.8rem; color: var(--gold-light); background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.3); border-radius: 6px; padding: 4px 12px; letter-spacing: 1px; }
+  .welcome-name { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--gold-light); display: none; }
+  .welcome-name.visible { display: inline; }
+  .lesson-nav { display: flex; justify-content: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .lesson-nav a { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; color: #94a3b8; padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(201,168,76,0.2); transition: color 0.2s, border-color 0.2s; }
+  .lesson-nav a:hover { color: var(--gold-light); border-color: var(--gold); }
+  .lesson-nav a.active { color: var(--gold-light); border-color: var(--gold); background: rgba(201,168,76,0.12); }
+  #name-overlay { position: fixed; inset: 0; background: rgba(13,27,42,0.92); display: flex; align-items: center; justify-content: center; z-index: 200; backdrop-filter: blur(4px); }
+  .name-card { background: white; border-radius: 16px; padding: 40px 36px; max-width: 380px; width: 90%; text-align: center; border-top: 4px solid var(--gold); box-shadow: 0 24px 60px rgba(0,0,0,0.4); }
+  .name-card .logo { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--navy); letter-spacing: 3px; }
+  .name-card .logo span { color: var(--gold); }
+  .name-card h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--navy); margin: 16px 0 8px; }
+  .name-card p { font-size: 1rem; color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
+  .name-input { width: 100%; padding: 12px 16px; font-family: 'Crimson Pro', serif; font-size: 1.1rem; border: 2px solid #e2e8f0; border-radius: 8px; outline: none; transition: border-color 0.2s; margin-bottom: 12px; }
+  .name-input:focus { border-color: var(--gold); }
+  .btn-join { width: 100%; padding: 13px; background: var(--navy); color: var(--gold-light); font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s, transform 0.1s; }
+  .btn-join:hover { background: var(--fill); }
+  .btn-join:active { transform: scale(0.98); }
+  .progress-wrap { background: #e2e8f0; height: 4px; }
+  .progress-bar { height: 4px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); transition: width 0.5s ease; }
+  main { max-width: 740px; margin: 0 auto; padding: 32px 20px 80px; }
+  .lesson-title { text-align: center; margin-bottom: 36px; }
+  .lesson-title .eyebrow { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+  .lesson-title h1 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--navy); line-height: 1.2; }
+  .section { margin-bottom: 36px; opacity: 0; transform: translateY(18px); animation: fadeUp 0.5s ease forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .section:nth-child(1) { animation-delay: 0.05s; }
+  .section:nth-child(2) { animation-delay: 0.10s; }
+  .section:nth-child(3) { animation-delay: 0.15s; }
+  .section:nth-child(4) { animation-delay: 0.20s; }
+  .section:nth-child(5) { animation-delay: 0.25s; }
+  .section:nth-child(6) { animation-delay: 0.30s; }
+  .section:nth-child(7) { animation-delay: 0.35s; }
+  .section:nth-child(8) { animation-delay: 0.40s; }
+  .section-label { font-family: 'DM Sans', sans-serif; font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid rgba(201,168,76,0.25); }
+  .sub-label { font-family: 'DM Sans', sans-serif; font-size: 0.68rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin: 16px 0 8px; }
+  p.body-text { font-size: 1.1rem; line-height: 1.8; color: #2d3748; margin-bottom: 12px; }
+  .fitb-line { font-size: 1.15rem; line-height: 2.2; color: #2d3748; margin-bottom: 8px; display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px; }
+  .big-fill { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--navy); margin: 20px 0 14px; display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; line-height: 1.6; }
+  .big-fill .blank { font-size: 1.4rem; min-width: 160px; }
+  .blank { display: inline-block; min-width: 140px; border: none; border-bottom: 2px solid var(--navy); padding: 2px 6px; font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--fill); background: transparent; outline: none; letter-spacing: 0.5px; transition: border-color 0.2s, background 0.2s; text-align: center; }
+  .blank::placeholder { color: #cbd5e1; font-weight: 400; letter-spacing: 0; font-size: 0.85rem; font-family: 'DM Sans', sans-serif; }
+  .blank:focus { border-color: var(--gold); background: rgba(201,168,76,0.06); }
+  .blank.filled { border-color: var(--gold); color: var(--navy); background: rgba(201,168,76,0.2); animation: popIn 0.3s ease; }
+  @keyframes popIn { 0%{transform:scale(1)} 50%{transform:scale(1.04)} 100%{transform:scale(1)} }
+  .highlight-sentence { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-style: italic; color: var(--navy); border-left: 4px solid var(--gold); padding: 8px 0 8px 16px; margin: 14px 0; line-height: 1.6; }
+  .scripture { background: var(--navy); color: #e2e8f0; border-radius: 10px; padding: 18px 20px; margin: 14px 0; position: relative; overflow: hidden; }
+  .scripture::before { content: '"'; position: absolute; top: -10px; left: 10px; font-size: 6rem; color: rgba(201,168,76,0.12); font-family: 'Playfair Display', serif; line-height: 1; }
+  .scripture .ref { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+  .scripture p { font-size: 1rem; line-height: 1.7; color: #e2e8f0; font-style: italic; }
+  .symptoms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; margin: 12px 0; }
+  .bullet-list { list-style: none; margin: 10px 0; }
+  .bullet-list li { font-size: 1.05rem; color: #374151; padding: 3px 0 3px 18px; position: relative; line-height: 1.7; }
+  .bullet-list li::before { content: '›'; position: absolute; left: 0; color: var(--gold); font-size: 1.2rem; top: 1px; }
+  .strategy-card { background: white; border: 1px solid #e2e8f0; border-top: 3px solid var(--gold); border-radius: 10px; padding: 18px 20px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .strategy-label { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px; }
+  .reflection-card { background: white; border: 1px solid #e2e8f0; border-top: 3px solid var(--gold); border-radius: 10px; padding: 20px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .reflection-card .q-num { font-family: 'DM Sans', sans-serif; font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .reflection-card .q-text { font-size: 1.05rem; color: var(--navy); line-height: 1.6; margin-bottom: 10px; font-weight: 600; }
+  .reflection-card .q-sub { font-size: 0.9rem; color: var(--muted); margin-bottom: 10px; line-height: 1.6; font-family: 'DM Sans', sans-serif; }
+  .reflection-textarea { width: 100%; padding: 10px 12px; font-family: 'Crimson Pro', serif; font-size: 1rem; border: 1.5px solid #e2e8f0; border-radius: 6px; resize: none; outline: none; color: var(--text); transition: border-color 0.2s; min-height: 70px; }
+  .reflection-textarea:focus { border-color: var(--gold); }
+  .reflection-textarea::placeholder { color: #94a3b8; font-style: italic; }
+  .declaration-box { background: var(--navy); border-radius: 12px; padding: 28px 24px; text-align: center; border: 1px solid rgba(201,168,76,0.3); }
+  .declaration-box .dec-label { font-family: 'DM Sans', sans-serif; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+  .declaration-box .memory-verse { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-style: italic; color: white; line-height: 1.6; margin-bottom: 6px; }
+  .declaration-box .verse-ref { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--gold-light); letter-spacing: 1px; margin-bottom: 20px; }
+  .declaration-lines { text-align: left; border-top: 1px solid rgba(201,168,76,0.2); padding-top: 16px; }
+  .declaration-lines p { font-family: 'Crimson Pro', serif; font-style: italic; color: #cbd5e1; font-size: 1.05rem; line-height: 1.8; margin-bottom: 6px; }
+  .progress-indicator { position: fixed; bottom: 20px; right: 20px; background: var(--navy); color: var(--gold-light); font-family: 'DM Sans', sans-serif; font-size: 0.8rem; padding: 8px 14px; border-radius: 20px; border: 1px solid rgba(201,168,76,0.3); box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 50; }
+  @media (max-width: 520px) {
+    .symptoms-grid { grid-template-columns: 1fr; }
+    .big-fill { font-size: 1.2rem; }
+    .lesson-title h1 { font-size: 1.5rem; }
+    .blank { min-width: 110px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="name-overlay">
+  <div class="name-card">
+    <div class="logo">PURE<span>MAN</span></div>
+    <h2>Welcome, Brother</h2>
+    <p>Enter your name to join the study session and follow along with the lesson.</p>
+    <input class="name-input" id="name-input" type="text" placeholder="Your first name..." maxlength="20" autofocus>
+    <button class="btn-join" id="btn-join" type="button">Join Session</button>
+  </div>
+</div>
+
+<header>
+  <div class="brand">PURE<span>MAN</span></div>
+  <div class="subtitle">Men's Bible Study · Lesson Four</div>
+  <div class="session-bar">
+    <span class="session-code">SESSION: PUREMAN-L4</span>
+    <span id="welcome-name" class="welcome-name"></span>
+  </div>
+  <nav class="lesson-nav">
+    <a href="index.html">Home</a>
+    <a href="pureman-lesson1.html">Lesson One</a>
+    <a href="pureman-lesson2.html">Lesson Two</a>
+    <a href="lesson-three.html">Lesson Three</a>
+    <a href="pureman-lesson4.html" class="active">Lesson Four</a>
+  </nav>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+</div>
+
+<main>
+  <div class="lesson-title">
+    <div class="eyebrow">Lesson Four</div>
+    <h1>A Better Way Forward</h1>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Stripping Off the Weight</div>
+    <p class="body-text">The Bible tells us that each of us accumulate things over the course of our lives that weigh us down and prevent us from moving forward into the life that God has called us to live.</p>
+    <div class="scripture">
+      <div class="ref">Hebrews 12:1 (NLT)</div>
+      <p>Therefore, since we are surrounded by such a huge crowd of witnesses to the life of faith, let us strip off every weight that slows us down, especially the sin that so easily trips us up. And let us run with endurance the race God has set before us.</p>
+    </div>
+    <p class="body-text">If we are going to be pure, whole, and strong men we are going to have to deal with the parts of our past that are acting as weight or hindrances to God's best for our lives.</p>
+    <p class="body-text">Our past can have a major impact on our future if we let it. We have to reconcile the reality that our past is a part of our life, but yet at the same time, it doesn't have to negatively impact our future.</p>
+    <div class="scripture">
+      <div class="ref">Philippians 3:14 (TLB)</div>
+      <p>I don't mean to say that I have already achieved these things or that I have already reached perfection. But I press on to possess that perfection for which Christ Jesus first possessed me. No, dear brothers, I am still not all I should be, but I am bringing all my energies to bear on this one thing: Forgetting the past and looking forward to what lies ahead, I strain to reach the end of the race and receive the prize for which God is calling us up to heaven because of what Christ Jesus did for us.</p>
+    </div>
+    <p class="body-text">Let's look at some lessons that we can learn about our past.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Our Past Shows Up</div>
+    <div class="big-fill">
+      Our past
+      <input class="blank" data-blank-id="l4-b1" data-answer="shows" placeholder="fill in...">
+      <input class="blank" data-blank-id="l4-b2" data-answer="up" placeholder="fill in...">
+      in our
+      <input class="blank" data-blank-id="l4-b3" data-answer="present" placeholder="fill in...">.
+    </div>
+    <p class="body-text">We all have a past and our past has a way of making its way into our present.</p>
+    <div class="scripture">
+      <div class="ref">Psalm 51:3 (NIV)</div>
+      <p>For I know my transgressions, and my sin is always before me.</p>
+    </div>
+    <div class="scripture">
+      <div class="ref">Psalm 38:4 (NIV)</div>
+      <p>My guilt has overwhelmed me like a burden too heavy to bear.</p>
+    </div>
+    <div class="sub-label">The weights of our past typically show up because:</div>
+    <ul class="bullet-list">
+      <li>We live with shame and regret</li>
+      <li>We replay scenarios and circumstances</li>
+      <li>We have allowed words from others to shape how we see ourselves</li>
+      <li>We harbor bitterness, offenses, and resentments toward others</li>
+      <li>We nurture wounds</li>
+      <li>We live with a void from not feeling fully loved and accepted</li>
+      <li>We fear that one day our past will repeat itself or catch up to us</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Deal with the Past</div>
+    <div class="big-fill">
+      <input class="blank" data-blank-id="l4-b4" data-answer="Deal" placeholder="fill in...">
+      with the
+      <input class="blank" data-blank-id="l4-b5" data-answer="Past" placeholder="fill in...">
+    </div>
+    <p class="body-text">We will never experience life to the fullest unless we face our past head on.</p>
+    <div class="sub-label">Symptoms of an undealt-with past</div>
+    <div class="symptoms-grid">
+      <ul class="bullet-list">
+        <li>Depression</li>
+        <li>Low self-worth</li>
+        <li>Always feel behind or left out</li>
+        <li>Consistently trying to prove yourself or please people</li>
+        <li>Performance anxiety</li>
+        <li>Perfectionism</li>
+        <li>Repetitive cycles of sin</li>
+      </ul>
+      <ul class="bullet-list">
+        <li>Resisting emotions</li>
+        <li>Uncontrolled emotions</li>
+        <li>Reciprocate behaviors</li>
+        <li>Detachment</li>
+        <li>Isolation</li>
+        <li>Insulation</li>
+        <li>Workaholic</li>
+        <li>Masking / Coping</li>
+      </ul>
+    </div>
+    <div class="highlight-sentence">Appropriately dealing with our past means seeking to loosen the destructive grip and lessen the negative influence that our past has on our lives. It implies purposefully identifying the chains keeping us bound and stepping out of the cycles that keep us stuck.</div>
+    <p class="body-text"><strong>To successfully deal with our past we must:</strong></p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Six Steps Forward</div>
+
+    <div class="strategy-card">
+      <div class="strategy-label">Start with <input class="blank" data-blank-id="l4-s1" data-answer="God" placeholder="fill in..." style="min-width:100px;"></div>
+      <div class="scripture"><div class="ref">John 14:6 (NIV)</div><p>Jesus answered, "I am the way and the truth and the life. No one comes to the Father except through me."</p></div>
+      <div class="scripture"><div class="ref">Luke 4:18 (NIV)</div><p>The Spirit of the Lord is on me, because he has anointed me to proclaim good news to the poor. He has sent me to proclaim freedom for the prisoners and recovery of sight for the blind, to set the oppressed free.</p></div>
+      <div class="scripture"><div class="ref">2 Corinthians 7:10 (NIV)</div><p>Godly sorrow brings repentance that leads to salvation and leaves no regret, but worldly sorrow brings death.</p></div>
+      <div class="scripture"><div class="ref">1 Peter 5:7 (NLT)</div><p>Give all your worries and cares to God, for he cares about you.</p></div>
+      <div class="scripture"><div class="ref">Matthew 11:28 (NIV)</div><p>Come to me, all you who are weary and burdened, and I will give you rest.</p></div>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strategy-label">Make <input class="blank" data-blank-id="l4-s2" data-answer="Amends" placeholder="fill in..." style="min-width:120px;"></div>
+      <div class="scripture"><div class="ref">Proverbs 28:13 (NKJV)</div><p>He who covers his sins will not prosper, but whoever confesses and forsakes them will have mercy.</p></div>
+      <div class="scripture"><div class="ref">Galatians 6:5 (NIV)</div><p>For each one should carry their own load.</p></div>
+      <div class="scripture"><div class="ref">Luke 19:8 (NIV)</div><p>But Zacchaeus stood up and said to the Lord, "Look, Lord! Here and now I give half of my possessions to the poor, and if I have cheated anybody out of anything, I will pay back four times the amount."</p></div>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strategy-label">Forgive → Release</div>
+      <div class="scripture"><div class="ref">Ephesians 4:32 (AMP)</div><p>Be kind and helpful to one another, tender-hearted [compassionate, understanding], forgiving one another [readily and freely], just as God in Christ also forgave you.</p></div>
+      <div class="scripture"><div class="ref">Mark 11:25 (NIV)</div><p>And when you stand praying, if you hold anything against anyone, forgive them, so that your Father in heaven may forgive you your sins.</p></div>
+      <div class="scripture"><div class="ref">Romans 8:1 (NIV)</div><p>Therefore, there is now no condemnation for those who are in Christ Jesus.</p></div>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strategy-label">Nurture <input class="blank" data-blank-id="l4-s3" data-answer="hope" placeholder="fill in..." style="min-width:100px;"></div>
+      <div class="scripture"><div class="ref">Hebrews 10:23 (NIV)</div><p>Let us hold unswervingly to the hope we profess, for he who promised is faithful.</p></div>
+      <div class="scripture"><div class="ref">Genesis 50:20 (TLB)</div><p>As far as I am concerned, God turned into good what you meant for evil, for he brought me to this high position I have today so that I could save the lives of many people.</p></div>
+      <div class="scripture"><div class="ref">Romans 8:28 (NIV)</div><p>And we know that in all things God works for the good of those who love him, who have been called according to his purpose.</p></div>
+      <div class="scripture"><div class="ref">Joel 2:25 (NIV)</div><p>I will repay you for the years the locusts have eaten.</p></div>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strategy-label">Get <input class="blank" data-blank-id="l4-s4" data-answer="wise help" placeholder="fill in..." style="min-width:140px;"></div>
+      <div class="scripture"><div class="ref">Proverbs 11:14 (ESV)</div><p>Where there is no guidance, a people falls, but in an abundance of counselors there is safety.</p></div>
+      <div class="scripture"><div class="ref">Proverbs 20:18 (NLT)</div><p>Plans succeed through good counsel; don't go to war without wise advice.</p></div>
+      <div class="scripture"><div class="ref">Proverbs 12:15 (NKJV)</div><p>The way of a fool is right in his own eyes, but he who heeds counsel is wise.</p></div>
+      <div class="scripture"><div class="ref">Proverbs 18:1 (ESV)</div><p>Whoever isolates himself seeks his own desire; he breaks out against all sound judgment.</p></div>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strategy-label">Build <input class="blank" data-blank-id="l4-s5" data-answer="healthy habits" placeholder="fill in..." style="min-width:160px;"></div>
+      <div class="scripture"><div class="ref">John 15:5 (NIV)</div><p>I am the vine; you are the branches. If you remain in me and I in you, you will bear much fruit; apart from me you can do nothing.</p></div>
+      <div class="scripture"><div class="ref">Galatians 6:7–8 (NIV)</div><p>Do not be deceived: God cannot be mocked. A man reaps what he sows. Whoever sows to please their flesh, from the flesh will reap destruction; whoever sows to please the Spirit, from the Spirit will reap eternal life.</p></div>
+      <div class="scripture"><div class="ref">Ephesians 4:22–24 (NIV)</div><p>You were taught, with regard to your former way of life, to put off your old self, which is being corrupted by its deceitful desires; to be made new in the attitude of your minds; and to put on the new self, created to be like God in true righteousness and holiness.</p></div>
+      <div class="scripture"><div class="ref">1 Timothy 4:7–8 (NIV)</div><p>Have nothing to do with godless myths and old wives' tales; rather, train yourself to be godly. For physical training is of some value, but godliness has value for all things, holding promise for both the present life and the life to come.</p></div>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strategy-label"><input class="blank" data-blank-id="l4-s6a" data-answer="Share" placeholder="fill in..." style="min-width:100px;"> your <input class="blank" data-blank-id="l4-s6b" data-answer="Story" placeholder="fill in..." style="min-width:100px;"></div>
+      <div class="scripture"><div class="ref">Psalm 66:16 (NIV)</div><p>Come and hear, all you who fear God; let me tell you what he has done for me.</p></div>
+      <div class="scripture"><div class="ref">Mark 5:19 (NIV)</div><p>Jesus did not let him, but said, "Go home to your own people and tell them how much the Lord has done for you, and how he has had mercy on you."</p></div>
+      <div class="scripture"><div class="ref">2 Corinthians 1:3–4 (NIV)</div><p>Praise be to the God and Father of our Lord Jesus Christ, the Father of compassion and the God of all comfort, who comforts us in all our troubles, so that we can comfort those in any trouble with the comfort we ourselves receive from God.</p></div>
+      <div class="scripture"><div class="ref">Revelation 12:11 (GW)</div><p>They won the victory over him because of the blood of the lamb and the word of their testimony. They didn't love their life so much that they refused to give it up.</p></div>
+      <div class="scripture"><div class="ref">Romans 12:2 (NIV)</div><p>Do not conform to the pattern of this world, but be transformed by the renewing of your mind. Then you will be able to test and approve what God's will is—his good, pleasing and perfect will.</p></div>
+      <div class="scripture"><div class="ref">1 Timothy 1:15–16 (NIV)</div><p>Here is a trustworthy saying that deserves full acceptance: Christ Jesus came into the world to save sinners—of whom I am the worst. But for that very reason I was shown mercy so that in me, the worst of sinners, Christ Jesus might display his immense patience as an example for those who would believe in him and receive eternal life.</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Reflection Questions</div>
+
+    <div class="reflection-card">
+      <div class="q-num">Question 1</div>
+      <div class="q-text">What are the specific "weights" from your past that are still affecting you today (are they sins, wounds, words spoken over you, or something else…)?</div>
+      <div class="q-sub">Finish this statement: "The weight I'm still carrying is _________."</div>
+      <textarea class="reflection-textarea" data-reflection="q1" placeholder="Share your thoughts..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 2</div>
+      <div class="q-text">Where do you see your past influencing your current decisions, reactions, or relationships?</div>
+      <textarea class="reflection-textarea" data-reflection="q2" placeholder="Share your thoughts..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 3</div>
+      <div class="q-text">Review the list of symptoms listed — which 2–3 show up most in your life right now? What might these symptoms be pointing back to?</div>
+      <textarea class="reflection-textarea" data-reflection="q3" placeholder="Share your thoughts..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 4</div>
+      <div class="q-text">Where have you been avoiding dealing with your past? What have you minimized, buried, or just tried to "move on" from?</div>
+      <textarea class="reflection-textarea" data-reflection="q4" placeholder="Share your thoughts..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 5</div>
+      <div class="q-text">When it comes to your past, have you truly brought it to God, or just tried to manage it yourself? What would it look like to genuinely surrender that area to Him this week?</div>
+      <textarea class="reflection-textarea" data-reflection="q5" placeholder="Share your thoughts..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 6</div>
+      <div class="q-text">Is there anything from your past that requires ownership or making it right? Where do you need to take responsibility instead of just feeling regret?</div>
+      <textarea class="reflection-textarea" data-reflection="q6" placeholder="Share your thoughts..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 7</div>
+      <div class="q-text">Who do you still need to forgive? Or—just as important—what are you still holding against yourself?</div>
+      <textarea class="reflection-textarea" data-reflection="q7" placeholder="Share your thoughts..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 8</div>
+      <div class="q-text">Where have you started to believe "This is just how it's always going to be"? What would it look like to actually believe that God can redeem and restore your past?</div>
+      <textarea class="reflection-textarea" data-reflection="q8" placeholder="Share your thoughts..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 9</div>
+      <div class="q-text">Where are you trying to handle things on your own that you shouldn't be? Who is one person you can invite into your process (mentor, counselor, trusted friend)?</div>
+      <textarea class="reflection-textarea" data-reflection="q9" placeholder="Share your thoughts..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 10</div>
+      <div class="q-text">What is one new habit you need to build to move forward? What is one old pattern you need to intentionally replace?</div>
+      <textarea class="reflection-textarea" data-reflection="q10" placeholder="Share your thoughts..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 11</div>
+      <div class="q-text">How could God use your past to help someone else? What part of your story are you still hesitant to share—and why?</div>
+      <textarea class="reflection-textarea" data-reflection="q11" placeholder="Share your thoughts..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 12</div>
+      <div class="q-text">What is one step you will take this week to loosen the grip of your past and move forward?</div>
+      <textarea class="reflection-textarea" data-reflection="q12" placeholder="Share your thoughts..."></textarea>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Scripture Memory & Declaration</div>
+    <p class="body-text">As we declare and believe God's word, it becomes a sharp edge that is used to shape our desires and as a weapon that fights against the enemy. Commit this scripture and declaration to memory this week. When your thoughts drift or old patterns try to resurface, return to this truth, recite it, and let it reshape you and fight the enemy for you.</p>
+    <div class="declaration-box">
+      <div class="dec-label">Commit this to memory this week</div>
+      <div class="memory-verse">"And we know that God causes everything to work together for the good of those who love God and are called according to his purpose for them."</div>
+      <div class="verse-ref">Romans 8:28 (NIV)</div>
+      <div class="declaration-lines">
+        <p>I am not my past. I let go.</p>
+        <p>I choose to forgive myself and I forgive others.</p>
+        <p>I will move forward with God knowing that He is working everything together for my good.</p>
+        <p>God has redeemed my life and I will tell others how He did it.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">My Commitment This Week</div>
+    <p class="body-text">Make this commitment: "This week, I am moving forward by _________."</p>
+    <textarea class="reflection-textarea" data-reflection="commitment" placeholder="This week, I am moving forward by…"></textarea>
+  </div>
+
+</main>
+
+<div class="progress-indicator" id="progress-indicator">0 / 12 blanks filled</div>
+
+<script>
+(function () {
+  const STORAGE_KEY = 'pureman-l4';
+  const NAME_KEY = 'pureman-name';
+  let saveTimer;
+
+  function blankKey(el) { return el.getAttribute('data-blank-id') || el.getAttribute('data-answer'); }
+  function norm(s) { return String(s || '').trim().toLowerCase().replace(/\s+/g, ' '); }
+
+  function loadSave() {
+    try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : {}; }
+    catch (_) { return {}; }
+  }
+
+  function saveAll() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      const data = { version: 1, blanks: {}, reflections: {}, updatedAt: new Date().toISOString() };
+      const nameInput = document.getElementById('name-input');
+      const welcome = document.getElementById('welcome-name');
+      let name = nameInput ? nameInput.value.trim() : '';
+      if (!name && welcome && welcome.classList.contains('visible')) {
+        name = welcome.textContent.replace(/^Welcome,\s*/, '').trim();
+      }
+      if (name) { data.name = name; try { localStorage.setItem(NAME_KEY, name); } catch (_) {} }
+      document.querySelectorAll('input.blank').forEach((b) => {
+        const key = blankKey(b);
+        if (key && b.value.trim()) data.blanks[key] = b.value;
+      });
+      document.querySelectorAll('textarea.reflection-textarea[data-reflection]').forEach((t) => {
+        const key = t.getAttribute('data-reflection');
+        if (key && t.value.trim()) data.reflections[key] = t.value;
+      });
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (_) {}
+    }, 300);
+  }
+
+  function enterSession(name) {
+    document.getElementById('name-overlay').style.display = 'none';
+    const welcome = document.getElementById('welcome-name');
+    welcome.textContent = 'Welcome, ' + name;
+    welcome.classList.add('visible');
+    saveAll();
+  }
+
+  function joinSession() {
+    const val = document.getElementById('name-input').value.trim();
+    if (!val) { document.getElementById('name-input').focus(); return; }
+    enterSession(val);
+  }
+
+  document.getElementById('btn-join').addEventListener('click', joinSession);
+  document.getElementById('name-input').addEventListener('keydown', e => { if (e.key === 'Enter') joinSession(); });
+
+  function autofillBlank(input) {
+    const answer = input.getAttribute('data-answer');
+    if (!answer) return;
+    const typed = norm(input.value);
+    const target = norm(answer);
+    if (!typed) { input.classList.remove('filled'); input.placeholder = 'fill in...'; return; }
+    if (target.startsWith(typed)) { input.value = answer; input.classList.add('filled'); input.placeholder = ''; }
+    else { input.classList.remove('filled'); }
+  }
+
+  function syncBlankStyle(input) {
+    const answer = input.getAttribute('data-answer');
+    if (!answer) return;
+    if (norm(input.value) === norm(answer)) { input.classList.add('filled'); input.placeholder = ''; }
+    else if (!input.value.trim()) { input.classList.remove('filled'); input.placeholder = 'fill in...'; }
+    else { input.classList.remove('filled'); }
+  }
+
+  function updateBlankProgress() {
+    const blanks = document.querySelectorAll('input.blank');
+    let filled = 0;
+    blanks.forEach((b) => {
+      const ans = b.getAttribute('data-answer');
+      if (ans && norm(b.value) === norm(ans)) filled++;
+    });
+    const bar = document.getElementById('progress-bar');
+    const label = document.getElementById('progress-indicator');
+    const pct = blanks.length ? Math.round((filled / blanks.length) * 100) : 0;
+    if (bar) bar.style.width = pct + '%';
+    if (label) label.textContent = filled + ' / ' + blanks.length + ' blanks filled';
+  }
+
+  function onBlankEvent(e) {
+    const input = e.target;
+    if (!(input instanceof HTMLInputElement) || !input.classList.contains('blank')) return;
+    autofillBlank(input);
+    updateBlankProgress();
+    saveAll();
+  }
+
+  document.querySelectorAll('input.blank').forEach((input) => {
+    input.setAttribute('autocomplete', 'off');
+    input.setAttribute('spellcheck', 'false');
+    input.addEventListener('focus', () => {
+      const answer = input.getAttribute('data-answer');
+      if (answer && !norm(input.value)) input.placeholder = 'Type "' + answer.charAt(0) + '" to autofill…';
+    });
+    input.addEventListener('blur', () => { if (!norm(input.value)) input.placeholder = 'fill in...'; });
+  });
+
+  document.querySelectorAll('textarea.reflection-textarea').forEach((ta) => {
+    ta.addEventListener('input', () => saveAll());
+  });
+
+  document.addEventListener('input', onBlankEvent, true);
+  document.addEventListener('keyup', onBlankEvent, true);
+  document.addEventListener('keydown', (e) => { if (e.key.length === 1) requestAnimationFrame(() => onBlankEvent(e)); }, true);
+  document.addEventListener('change', onBlankEvent, true);
+
+  function restoreProgress() {
+    const saved = loadSave();
+    let name = saved.name;
+    if (!name) { try { name = localStorage.getItem(NAME_KEY) || ''; } catch (_) {} }
+    if (name) {
+      document.getElementById('name-input').value = name;
+      document.getElementById('name-overlay').style.display = 'none';
+      const welcome = document.getElementById('welcome-name');
+      welcome.textContent = 'Welcome, ' + name;
+      welcome.classList.add('visible');
+    }
+    if (saved.blanks) {
+      document.querySelectorAll('input.blank').forEach((b) => {
+        const key = blankKey(b);
+        if (key && saved.blanks[key] != null) { b.value = saved.blanks[key]; syncBlankStyle(b); }
+      });
+    }
+    if (saved.reflections) {
+      document.querySelectorAll('textarea.reflection-textarea[data-reflection]').forEach((t) => {
+        const key = t.getAttribute('data-reflection');
+        if (key && saved.reflections[key] != null) t.value = saved.reflections[key];
+      });
+    }
+    updateBlankProgress();
+  }
+
+  restoreProgress();
+})();
+</script>
+</body>
+</html>
