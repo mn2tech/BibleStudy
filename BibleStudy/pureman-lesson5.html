@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Pure Man – Lesson Five</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --navy:#0d1b2a; --gold:#c9a84c; --gold-light:#e8c97a; --cream:#f5f0e8; --text:#1a1a2e; --muted:#6b7280; --fill:#1e3a5f; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Crimson Pro',Georgia,serif; background:var(--cream); color:var(--text); min-height:100vh; }
+  header { background:var(--navy); padding:20px 24px 16px; text-align:center; border-bottom:3px solid var(--gold); position:sticky; top:0; z-index:100; }
+  header .brand { font-family:'Playfair Display',serif; font-size:2rem; font-weight:700; color:white; letter-spacing:4px; text-transform:uppercase; }
+  header .brand span { color:var(--gold); }
+  header .subtitle { font-family:'DM Sans',sans-serif; font-size:0.75rem; color:var(--gold-light); letter-spacing:2px; text-transform:uppercase; margin-top:2px; }
+  .session-bar { display:flex; align-items:center; justify-content:center; gap:16px; margin-top:10px; flex-wrap:wrap; }
+  .session-code { font-family:'DM Sans',sans-serif; font-size:0.8rem; color:var(--gold-light); background:rgba(201,168,76,0.12); border:1px solid rgba(201,168,76,0.3); border-radius:6px; padding:4px 12px; letter-spacing:1px; }
+  .welcome-name { font-family:'DM Sans',sans-serif; font-size:0.78rem; color:var(--gold-light); display:none; }
+  .welcome-name.visible { display:inline; }
+  .lesson-nav { display:flex; justify-content:center; gap:8px; margin-top:10px; flex-wrap:wrap; }
+  .lesson-nav a { font-family:'DM Sans',sans-serif; font-size:0.72rem; letter-spacing:1px; text-transform:uppercase; text-decoration:none; color:#94a3b8; padding:4px 10px; border-radius:4px; border:1px solid rgba(201,168,76,0.2); transition:color 0.2s,border-color 0.2s; }
+  .lesson-nav a:hover { color:var(--gold-light); border-color:var(--gold); }
+  .lesson-nav a.active { color:var(--gold-light); border-color:var(--gold); background:rgba(201,168,76,0.12); }
+  #name-overlay { position:fixed; inset:0; background:rgba(13,27,42,0.92); display:flex; align-items:center; justify-content:center; z-index:200; backdrop-filter:blur(4px); }
+  .name-card { background:white; border-radius:16px; padding:40px 36px; max-width:380px; width:90%; text-align:center; border-top:4px solid var(--gold); box-shadow:0 24px 60px rgba(0,0,0,0.4); }
+  .name-card .logo { font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:700; color:var(--navy); letter-spacing:3px; }
+  .name-card .logo span { color:var(--gold); }
+  .name-card h2 { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--navy); margin:16px 0 8px; }
+  .name-card p { font-size:1rem; color:var(--muted); margin-bottom:20px; line-height:1.5; }
+  .name-input { width:100%; padding:12px 16px; font-family:'Crimson Pro',serif; font-size:1.1rem; border:2px solid #e2e8f0; border-radius:8px; outline:none; margin-bottom:12px; }
+  .name-input:focus { border-color:var(--gold); }
+  .btn-join { width:100%; padding:13px; background:var(--navy); color:var(--gold-light); font-family:'DM Sans',sans-serif; font-size:0.95rem; font-weight:500; letter-spacing:1px; text-transform:uppercase; border:none; border-radius:8px; cursor:pointer; }
+  .btn-join:hover { background:var(--fill); }
+  .progress-wrap { background:#e2e8f0; height:4px; }
+  .progress-bar { height:4px; background:linear-gradient(90deg,var(--gold),var(--gold-light)); transition:width 0.5s ease; }
+  main { max-width:740px; margin:0 auto; padding:32px 20px 80px; }
+  .lesson-title { text-align:center; margin-bottom:36px; }
+  .lesson-title .eyebrow { font-family:'DM Sans',sans-serif; font-size:0.72rem; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+  .lesson-title h1 { font-family:'Playfair Display',serif; font-size:2rem; color:var(--navy); line-height:1.2; }
+  .section { margin-bottom:36px; opacity:0; transform:translateY(18px); animation:fadeUp 0.5s ease forwards; }
+  @keyframes fadeUp { to { opacity:1; transform:translateY(0); } }
+  .section:nth-child(1){animation-delay:0.05s} .section:nth-child(2){animation-delay:0.10s} .section:nth-child(3){animation-delay:0.15s} .section:nth-child(4){animation-delay:0.20s} .section:nth-child(5){animation-delay:0.25s} .section:nth-child(6){animation-delay:0.30s}
+  .section-label { font-family:'DM Sans',sans-serif; font-size:0.68rem; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:10px; padding-bottom:6px; border-bottom:1px solid rgba(201,168,76,0.25); }
+  .sub-label { font-family:'DM Sans',sans-serif; font-size:0.68rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin:16px 0 8px; }
+  p.body-text { font-size:1.1rem; line-height:1.8; color:#2d3748; margin-bottom:12px; }
+  .big-fill { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; color:var(--navy); margin:20px 0 14px; display:flex; align-items:baseline; flex-wrap:wrap; gap:8px; line-height:1.6; }
+  .blank { display:inline-block; min-width:120px; border:none; border-bottom:2px solid var(--navy); padding:2px 6px; font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; color:var(--fill); background:transparent; outline:none; text-align:center; transition:border-color 0.2s,background 0.2s; }
+  .blank::placeholder { color:#cbd5e1; font-weight:400; font-size:0.85rem; font-family:'DM Sans',sans-serif; }
+  .blank:focus { border-color:var(--gold); background:rgba(201,168,76,0.06); }
+  .blank.filled { border-color:var(--gold); color:var(--navy); background:rgba(201,168,76,0.2); }
+  .highlight-sentence { font-family:'Playfair Display',serif; font-size:1.2rem; font-style:italic; color:var(--navy); border-left:4px solid var(--gold); padding:8px 0 8px 16px; margin:14px 0; line-height:1.6; }
+  .scripture { background:var(--navy); color:#e2e8f0; border-radius:10px; padding:18px 20px; margin:14px 0; position:relative; overflow:hidden; }
+  .scripture::before { content:'"'; position:absolute; top:-10px; left:10px; font-size:6rem; color:rgba(201,168,76,0.12); font-family:'Playfair Display',serif; line-height:1; }
+  .scripture .ref { font-family:'DM Sans',sans-serif; font-size:0.72rem; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+  .scripture p { font-size:1rem; line-height:1.7; color:#e2e8f0; font-style:italic; }
+  .bullet-list { list-style:none; margin:10px 0; }
+  .bullet-list li { font-size:1.05rem; color:#374151; padding:3px 0 3px 18px; position:relative; line-height:1.7; }
+  .bullet-list li::before { content:'›'; position:absolute; left:0; color:var(--gold); font-size:1.2rem; top:1px; }
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:0 20px; margin:12px 0; }
+  .strategy-card { background:white; border:1px solid #e2e8f0; border-top:3px solid var(--gold); border-radius:10px; padding:18px 20px; margin-bottom:14px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+  .strategy-label { font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold); margin-bottom:6px; display:flex; align-items:baseline; flex-wrap:wrap; gap:6px; }
+  .reflection-card { background:white; border:1px solid #e2e8f0; border-top:3px solid var(--gold); border-radius:10px; padding:20px; margin-bottom:14px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+  .reflection-card .q-num { font-family:'DM Sans',sans-serif; font-size:0.68rem; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:4px; }
+  .reflection-card .q-text { font-size:1.05rem; color:var(--navy); line-height:1.6; margin-bottom:10px; font-weight:600; }
+  .reflection-card .q-sub { font-size:0.9rem; color:var(--muted); margin-bottom:10px; line-height:1.6; font-family:'DM Sans',sans-serif; }
+  .reflection-textarea { width:100%; padding:10px 12px; font-family:'Crimson Pro',serif; font-size:1rem; border:1.5px solid #e2e8f0; border-radius:6px; resize:none; outline:none; color:var(--text); min-height:70px; }
+  .reflection-textarea:focus { border-color:var(--gold); }
+  .reflection-textarea::placeholder { color:#94a3b8; font-style:italic; }
+  .declaration-box { background:var(--navy); border-radius:12px; padding:28px 24px; text-align:center; border:1px solid rgba(201,168,76,0.3); }
+  .declaration-box .dec-label { font-family:'DM Sans',sans-serif; font-size:0.7rem; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:14px; }
+  .declaration-box .memory-verse { font-family:'Playfair Display',serif; font-size:1.25rem; font-style:italic; color:white; line-height:1.6; margin-bottom:6px; }
+  .declaration-box .verse-ref { font-family:'DM Sans',sans-serif; font-size:0.78rem; color:var(--gold-light); letter-spacing:1px; margin-bottom:20px; }
+  .declaration-lines { text-align:left; border-top:1px solid rgba(201,168,76,0.2); padding-top:16px; }
+  .declaration-lines p { font-family:'Crimson Pro',serif; font-style:italic; color:#cbd5e1; font-size:1.05rem; line-height:1.8; margin-bottom:6px; }
+  .progress-indicator { position:fixed; bottom:20px; right:20px; background:var(--navy); color:var(--gold-light); font-family:'DM Sans',sans-serif; font-size:0.8rem; padding:8px 14px; border-radius:20px; border:1px solid rgba(201,168,76,0.3); z-index:50; }
+  @media (max-width:520px) { .two-col { grid-template-columns:1fr; } .lesson-title h1 { font-size:1.5rem; } .blank { min-width:100px; } }
+</style>
+</head>
+<body>
+
+<div id="name-overlay">
+  <div class="name-card">
+    <div class="logo">PURE<span>MAN</span></div>
+    <h2>Welcome, Brother</h2>
+    <p>Enter your name to join the study session and follow along with the lesson.</p>
+    <input class="name-input" id="name-input" type="text" placeholder="Your first name..." maxlength="20" autofocus>
+    <button class="btn-join" id="btn-join" type="button">Join Session</button>
+  </div>
+</div>
+
+<header>
+  <div class="brand">PURE<span>MAN</span></div>
+  <div class="subtitle">Men's Bible Study · Lesson Five</div>
+  <div class="session-bar">
+    <span class="session-code">SESSION: PUREMAN-L5</span>
+    <span id="welcome-name" class="welcome-name"></span>
+  </div>
+  <nav class="lesson-nav">
+    <a href="index.html">Home</a>
+    <a href="pureman-lesson1.html">Lesson One</a>
+    <a href="pureman-lesson2.html">Lesson Two</a>
+    <a href="lesson-three.html">Lesson Three</a>
+    <a href="pureman-lesson4.html">Lesson Four</a>
+    <a href="pureman-lesson5.html" class="active">Lesson Five</a>
+  </nav>
+</header>
+
+<div class="progress-wrap"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div>
+
+<main>
+  <div class="lesson-title">
+    <div class="eyebrow">Lesson Five</div>
+    <h1>Living Strong</h1>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Strength & Endurance</div>
+    <p class="body-text">Strength is a vital characteristic for men who desire to live pure and purposeful lives.</p>
+    <p class="body-text">The apostle Paul knew this better than anyone. He lived a life of constant persecution and resistance from others; he endured through storms, shipwrecks, snake bites, and starvation. He had to overcome his past; resist the temptations of single-life; fight the effects of cultural swings — if anyone knew what was needed to fulfill their purpose it was Paul.</p>
+    <div class="scripture"><div class="ref">2 Corinthians 4:8–9 (NIV)</div><p>We are hard pressed on every side, but not crushed; perplexed, but not in despair; persecuted, but not abandoned; struck down, but not destroyed.</p></div>
+    <div class="scripture"><div class="ref">Philippians 4:13 (NIV)</div><p>I can do all this through him who gives me strength.</p></div>
+    <div class="scripture"><div class="ref">1 Samuel 30:6 (NKJV)</div><p>Now David was greatly distressed, for the people spoke of stoning him, because the soul of all the people was grieved… But David strengthened himself in the Lord his God.</p></div>
+    <div class="highlight-sentence">The Christian life is not for the weak; it is not built for comfort, it's built for endurance (endure = to harden into something that lasts).</div>
+    <div class="scripture"><div class="ref">James 1:3–4 (NIV)</div><p>For you know that when your faith is tested, your endurance has a chance to grow. So let it grow, for when your endurance is fully developed, you will be perfect and complete, needing nothing.</p></div>
+    <p class="body-text">We will never endure as men if we do not get strong. Living strong is not optional, it's required.</p>
+    <div class="scripture"><div class="ref">1 Corinthians 16:13 (NIV)</div><p>Be on your guard; stand firm in the faith; be courageous; be strong.</p></div>
+    <div class="scripture"><div class="ref">Ephesians 6:10 (NLT)</div><p>A final word: Be strong in the Lord and in his mighty power.</p></div>
+    <p class="body-text"><strong>Is Jesus Lord of your life?</strong></p>
+    <div class="sub-label">The Truth About Strength</div>
+    <ul class="bullet-list">
+      <li>Strength is <input class="blank" data-blank-id="l5-b1" data-answer="developed" placeholder="fill in..." style="min-width:110px;display:inline-block;"> and proven under <input class="blank" data-blank-id="l5-b2" data-answer="stress" placeholder="fill in..." style="min-width:110px;display:inline-block;">.</li>
+      <li>Strength can be gained and lost.</li>
+      <li>Strength determines endurance.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Five Characteristics of Strong Men</div>
+
+    <div class="strategy-card">
+      <div class="strategy-label">1. Have <input class="blank" data-blank-id="l5-c1a" data-answer="settled" placeholder="fill in..." style="min-width:100px;"> the <input class="blank" data-blank-id="l5-c1b" data-answer="#1" placeholder="fill in..." style="min-width:60px;"> issue</div>
+      <div class="scripture"><div class="ref">Matthew 22:37 (NLT)</div><p>Jesus replied, "You must love the Lord your God with all your heart, all your soul, and all your mind."</p></div>
+      <div class="scripture"><div class="ref">Exodus 20:3 (NIV)</div><p>You shall have no other gods before me.</p></div>
+      <div class="scripture"><div class="ref">Proverbs 9:10 (NIV)</div><p>The fear of the Lord is the beginning of wisdom, and knowledge of the Holy One is understanding.</p></div>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strategy-label">2. Are <input class="blank" data-blank-id="l5-c2a" data-answer="committed" placeholder="fill in..." style="min-width:110px;"> to a <input class="blank" data-blank-id="l5-c2b" data-answer="training plan" placeholder="fill in..." style="min-width:140px;"></div>
+      <div class="scripture"><div class="ref">1 Timothy 4:7–8 (NIV)</div><p>Have nothing to do with godless myths and old wives' tales; rather, train yourself to be godly. For physical training is of some value, but godliness has value for all things, holding promise for both the present life and the life to come.</p></div>
+      <div class="scripture"><div class="ref">1 Corinthians 9:24–27 (NLT)</div><p>Don't you realize that in a race everyone runs, but only one person gets the prize? So run to win! All athletes are disciplined in their training. They do it to win a prize that will fade away, but we do it for an eternal prize. So I run with purpose in every step. I am not just shadowboxing. I discipline my body like an athlete, training it to do what it should. Otherwise, I fear that after preaching to others I myself might be disqualified.</p></div>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strategy-label">3. <input class="blank" data-blank-id="l5-c3a" data-answer="Invest" placeholder="fill in..." style="min-width:100px;"> in high-value <input class="blank" data-blank-id="l5-c3b" data-answer="relationships" placeholder="fill in..." style="min-width:130px;"></div>
+      <div class="scripture"><div class="ref">Ecclesiastes 4:9–12 (TLB)</div><p>Two can accomplish more than twice as much as one, for the results can be much better. If one falls, the other pulls him up; but if a man falls when he is alone, he's in trouble. Also, on a cold night, two under the same blanket gain warmth from each other, but how can one be warm alone? And one standing alone can be attacked and defeated, but two can stand back-to-back and conquer; three is even better, for a triple-braided cord is not easily broken.</p></div>
+      <div class="scripture"><div class="ref">Luke 5:18 (NLV)</div><p>Some men took a man who was not able to move his body to Jesus. He was carried on a bed. They looked for a way to take the man into the house where Jesus was.</p></div>
+      <div class="scripture"><div class="ref">Matthew 27:31–32 (NIV)</div><p>After they had mocked him, they took off the robe and put his own clothes on him. Then they led him away to crucify him. As they were going out, they met a man from Cyrene, named Simon, and they forced him to carry the cross.</p></div>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strategy-label">4. <input class="blank" data-blank-id="l5-c4a" data-answer="Level" placeholder="fill in..." style="min-width:90px;"> up their <input class="blank" data-blank-id="l5-c4b" data-answer="standards" placeholder="fill in..." style="min-width:120px;"></div>
+      <div class="scripture"><div class="ref">Philippians 1:27a (NLT)</div><p>Above all, you must live as citizens of heaven, conducting yourselves in a manner worthy of the Good News about Christ.</p></div>
+      <div class="scripture"><div class="ref">2 Peter 1:5–9 (NLV)</div><p>Do your best to add holy living to your faith. Then add to this a better understanding. As you have a better understanding, be able to say no when you need to. Do not give up. And as you wait and do not give up, live God-like. As you live God-like, be kind to Christian brothers and love them. If you have all these things and keep growing in them, they will keep you from being of no use and from having no fruit when it comes to knowing our Lord Jesus Christ. But if you do not have these things, you are blind and cannot see far. You forget God saved you from your old life of sin.</p></div>
+      <div class="scripture"><div class="ref">Matthew 5:27–44 (NIV)</div><p>You have heard that it was said… but I tell you…</p></div>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strategy-label">5. <input class="blank" data-blank-id="l5-c5a" data-answer="Work" placeholder="fill in..." style="min-width:90px;"> <input class="blank" data-blank-id="l5-c5b" data-answer="hard" placeholder="fill in..." style="min-width:90px;">.</div>
+      <div class="scripture"><div class="ref">Colossians 3:23a (NIV)</div><p>Whatever you do, work at it with all your heart, as working for the Lord, not for human masters.</p></div>
+      <div class="scripture"><div class="ref">Proverbs 14:23a (GW)</div><p>In hard work there is always something gained, but idle talk leads only to poverty.</p></div>
+      <div class="scripture"><div class="ref">Hebrews 12:11 (NLT)</div><p>No discipline is enjoyable while it is happening — it's painful! But afterward there will be a peaceful harvest of right living for those who are trained in this way.</p></div>
+      <div class="scripture"><div class="ref">Luke 9:23 (NIV)</div><p>Then he said to them all: "Whoever wants to be my disciple must deny themselves and take up their cross daily and follow me."</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Reflection Questions</div>
+
+    <div class="reflection-card">
+      <div class="q-num">Question 1</div>
+      <div class="q-text">What relationship does strength have with endurance? Why is strength important to men?</div>
+      <textarea class="reflection-textarea" data-reflection="q1" placeholder="Share your thoughts..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 2</div>
+      <div class="q-text">What does it mean for Jesus to be Lord of your life?</div>
+      <textarea class="reflection-textarea" data-reflection="q2" placeholder="Share your thoughts..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 3</div>
+      <div class="q-text">Finish this statement: "The thing that most competes with God in my life right now is _________."</div>
+      <textarea class="reflection-textarea" data-reflection="q3" placeholder="Share your thoughts..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 4</div>
+      <div class="q-text">Which of these are included in your training plan?</div>
+      <div class="two-col">
+        <ul class="bullet-list">
+          <li>Praying</li>
+          <li>Being still with God</li>
+          <li>Journaling</li>
+          <li>Reading the Bible daily</li>
+          <li>Memorizing scripture</li>
+        </ul>
+        <ul class="bullet-list">
+          <li>Attending church regularly</li>
+          <li>Telling others about Jesus</li>
+          <li>Faithfully serving</li>
+          <li>Tithing</li>
+          <li>Other</li>
+        </ul>
+      </div>
+      <textarea class="reflection-textarea" data-reflection="q4" placeholder="Which items are in your plan? What else?"></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 5</div>
+      <div class="q-text">What competes with or regularly alters your spiritual training plan? How can you mitigate this from happening?</div>
+      <textarea class="reflection-textarea" data-reflection="q5" placeholder="Share your thoughts..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 6</div>
+      <div class="q-text">Why is it important to invest in strong relationships?</div>
+      <textarea class="reflection-textarea" data-reflection="q6" placeholder="Share your thoughts..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 7</div>
+      <div class="q-text">Why is it important for you to bring strength to a relationship?</div>
+      <textarea class="reflection-textarea" data-reflection="q7" placeholder="Share your thoughts..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 8</div>
+      <div class="q-text">Who are the people strengthening you spiritually right now? Who are the people pulling you away from strength (subtly or directly)?</div>
+      <textarea class="reflection-textarea" data-reflection="q8" placeholder="Share your thoughts..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 9</div>
+      <div class="q-text">Where have you lowered your standards to make life easier or more comfortable? Where have you raised your standards to live worthy of God's calling for you?</div>
+      <textarea class="reflection-textarea" data-reflection="q9" placeholder="Share your thoughts..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 10</div>
+      <div class="q-text">Why is working hard an important character trait for men?</div>
+      <div class="q-sub">Finish this statement: "I need to start working harder in the area of _________."</div>
+      <textarea class="reflection-textarea" data-reflection="q10" placeholder="Share your thoughts..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 11</div>
+      <div class="q-text">Identify:</div>
+      <div class="q-sub">One area to strengthen →<br>One habit to train consistently →<br>One relationship to lean into or adjust →<br>One standard to raise →</div>
+      <textarea class="reflection-textarea" data-reflection="q11" placeholder="Your answers..."></textarea>
+    </div>
+    <div class="reflection-card">
+      <div class="q-num">Question 12</div>
+      <div class="q-text">What will you do this week?</div>
+      <div class="q-sub">"This week, I am living strong by _________."</div>
+      <textarea class="reflection-textarea" data-reflection="q12" placeholder="Share your thoughts..."></textarea>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Scripture Memory & Declaration</div>
+    <p class="body-text">As we declare and believe God's word, it becomes a sharp edge that is used to shape our desires and as a weapon that fights against the enemy. Commit this scripture and declaration to memory this week. When your thoughts drift or old patterns try to resurface, return to this truth, recite it, and let it reshape you and fight the enemy for you.</p>
+    <div class="declaration-box">
+      <div class="dec-label">Commit this to memory this week</div>
+      <div class="memory-verse">"For you know that when your faith is tested, your endurance has a chance to grow. So let it grow, for when your endurance is fully developed, you will be perfect and complete, needing nothing."</div>
+      <div class="verse-ref">James 1:3–4 (NIV)</div>
+      <div class="declaration-lines">
+        <p>Jesus is calling me to be strong.</p>
+        <p>I will pattern my life for strength and endurance which first starts with settling the #1 issue — Jesus is Lord of my life.</p>
+        <p>I will live strong by committing to growth, godly friendships, leveling up my standards, and a high work ethic.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">My Commitment This Week</div>
+    <p class="body-text">Make this commitment: "This week, I am living strong by _________."</p>
+    <textarea class="reflection-textarea" data-reflection="commitment" placeholder="This week, I am living strong by…"></textarea>
+  </div>
+
+</main>
+
+<div class="progress-indicator" id="progress-indicator">0 / 12 blanks filled</div>
+
+<script>
+(function () {
+  const STORAGE_KEY = 'pureman-l5';
+  const NAME_KEY = 'pureman-name';
+  let saveTimer;
+  function blankKey(el) { return el.getAttribute('data-blank-id') || el.getAttribute('data-answer'); }
+  function norm(s) { return String(s || '').trim().toLowerCase().replace(/\s+/g, ' '); }
+  function loadSave() { try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : {}; } catch (_) { return {}; } }
+  function saveAll() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      const data = { version: 1, blanks: {}, reflections: {}, updatedAt: new Date().toISOString() };
+      const nameInput = document.getElementById('name-input');
+      const welcome = document.getElementById('welcome-name');
+      let name = nameInput ? nameInput.value.trim() : '';
+      if (!name && welcome && welcome.classList.contains('visible')) name = welcome.textContent.replace(/^Welcome,\s*/, '').trim();
+      if (name) { data.name = name; try { localStorage.setItem(NAME_KEY, name); } catch (_) {} }
+      document.querySelectorAll('input.blank').forEach((b) => { const key = blankKey(b); if (key && b.value.trim()) data.blanks[key] = b.value; });
+      document.querySelectorAll('textarea.reflection-textarea[data-reflection]').forEach((t) => { const key = t.getAttribute('data-reflection'); if (key && t.value.trim()) data.reflections[key] = t.value; });
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (_) {}
+    }, 300);
+  }
+  function enterSession(name) { document.getElementById('name-overlay').style.display = 'none'; const w = document.getElementById('welcome-name'); w.textContent = 'Welcome, ' + name; w.classList.add('visible'); saveAll(); }
+  function joinSession() { const val = document.getElementById('name-input').value.trim(); if (!val) { document.getElementById('name-input').focus(); return; } enterSession(val); }
+  document.getElementById('btn-join').addEventListener('click', joinSession);
+  document.getElementById('name-input').addEventListener('keydown', e => { if (e.key === 'Enter') joinSession(); });
+  function autofillBlank(input) {
+    const answer = input.getAttribute('data-answer'); if (!answer) return;
+    const typed = norm(input.value); const target = norm(answer);
+    if (!typed) { input.classList.remove('filled'); input.placeholder = 'fill in...'; return; }
+    if (target.startsWith(typed)) { input.value = answer; input.classList.add('filled'); input.placeholder = ''; }
+    else { input.classList.remove('filled'); }
+  }
+  function syncBlankStyle(input) {
+    const answer = input.getAttribute('data-answer'); if (!answer) return;
+    if (norm(input.value) === norm(answer)) { input.classList.add('filled'); input.placeholder = ''; }
+    else if (!input.value.trim()) { input.classList.remove('filled'); input.placeholder = 'fill in...'; }
+    else { input.classList.remove('filled'); }
+  }
+  function updateBlankProgress() {
+    const blanks = document.querySelectorAll('input.blank'); let filled = 0;
+    blanks.forEach((b) => { const ans = b.getAttribute('data-answer'); if (ans && norm(b.value) === norm(ans)) filled++; });
+    const bar = document.getElementById('progress-bar'); const label = document.getElementById('progress-indicator');
+    const pct = blanks.length ? Math.round((filled / blanks.length) * 100) : 0;
+    if (bar) bar.style.width = pct + '%';
+    if (label) label.textContent = filled + ' / ' + blanks.length + ' blanks filled';
+  }
+  function onBlankEvent(e) {
+    const input = e.target;
+    if (!(input instanceof HTMLInputElement) || !input.classList.contains('blank')) return;
+    autofillBlank(input); updateBlankProgress(); saveAll();
+  }
+  document.querySelectorAll('input.blank').forEach((input) => {
+    input.setAttribute('autocomplete', 'off'); input.setAttribute('spellcheck', 'false');
+    input.addEventListener('focus', () => { const answer = input.getAttribute('data-answer'); if (answer && !norm(input.value)) input.placeholder = 'Type "' + answer.charAt(0) + '" to autofill…'; });
+    input.addEventListener('blur', () => { if (!norm(input.value)) input.placeholder = 'fill in...'; });
+  });
+  document.querySelectorAll('textarea.reflection-textarea').forEach((ta) => { ta.addEventListener('input', () => saveAll()); });
+  document.addEventListener('input', onBlankEvent, true);
+  document.addEventListener('keyup', onBlankEvent, true);
+  document.addEventListener('keydown', (e) => { if (e.key.length === 1) requestAnimationFrame(() => onBlankEvent(e)); }, true);
+  document.addEventListener('change', onBlankEvent, true);
+  function restoreProgress() {
+    const saved = loadSave();
+    let name = saved.name; if (!name) { try { name = localStorage.getItem(NAME_KEY) || ''; } catch (_) {} }
+    if (name) { document.getElementById('name-input').value = name; document.getElementById('name-overlay').style.display = 'none'; const w = document.getElementById('welcome-name'); w.textContent = 'Welcome, ' + name; w.classList.add('visible'); }
+    if (saved.blanks) document.querySelectorAll('input.blank').forEach((b) => { const key = blankKey(b); if (key && saved.blanks[key] != null) { b.value = saved.blanks[key]; syncBlankStyle(b); } });
+    if (saved.reflections) document.querySelectorAll('textarea.reflection-textarea[data-reflection]').forEach((t) => { const key = t.getAttribute('data-reflection'); if (key && saved.reflections[key] != null) t.value = saved.reflections[key]; });
+    updateBlankProgress();
+  }
+  restoreProgress();
+})();
+</script>
+</body>
+</html>
