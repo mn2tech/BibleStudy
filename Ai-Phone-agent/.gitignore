@@ -1,0 +1,13 @@
+.env
+google-service-account.json
+*credentials*.json
+*.db
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+.idea/
+.vscode/
+*.egg-info/
+dist/
+build/
